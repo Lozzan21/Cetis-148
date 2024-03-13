@@ -24,34 +24,49 @@
         <div class="w-7/12">
             <form class="space-y-10 mt-10 w-11/12" id="formularioPdf" action="/generar-pdf" method="POST"
                 target="iframePdf">
-                <div class="flex space-x-24">
+                <div class="flex">
                     <div class=" space-x-1 flex items-center ml-10">
-                        <!-- Eliminado el campo de Número de Oficio -->
                     </div>
-                    <div class="space-x-1 flex items-center ml-10">
+                    <div class="space-x-1 flex items-center">
                         <label class="font-medium text-sm" for="asunto">ASUNTO*</label>
                         <select class="h-8 rounded border-slate-400 border" id="asunto" name="asunto" required>
                         </select><br><br>
                     </div>
+                    <button id="btnAgregarasunto" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg"
+                        type="button">
+                        Agregar
+                    </button>
                 </div>
                 <div class="flex space-x-24">
                     <div class=" space-x-1 flex items-center ml-10">
                         <label class="font-medium text-sm" for="fecha">FECHA*</label>
                         <input class="h-8 rounded border-slate-400 border" type="date" id="fecha" name="fecha"><br><br>
                     </div>
+                    <button id="btnAgregarfecha" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg"
+                        type="button">
+                        Agregar
+                    </button>
                 </div>
-                <div class="flex space-x-24">
+                <div class="">
                     <div class="space-x-1 flex items-center ml-10">
                         <label class="font-medium text-sm" for="maestro">MAESTRO*</label>
                         <select class="h-8 rounded border-slate-400 border" id="maestro" name="maestro" required>
                         </select><br><br>
                     </div>
+                    <button id="btnAgregarmaestro" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg"
+                        type="button">
+                        Agregar
+                    </button>
                     <div class="space-x-1 flex items-center ml-10">
                         <label class="font-medium text-sm" for="especialidades">ESPECIALIDAD*</label>
                         <select class="h-8 rounded border-slate-400 border" id="especialidades" name="especialidades"
                             required>
                         </select><br><br>
                     </div>
+                    <button id="btnAgregarespecialidad" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg"
+                        type="button">
+                        Agregar
+                    </button>
                 </div>
                 <div class="flex space-x-24">
                     <div class="space-x-1 flex items-center ml-10">
@@ -59,11 +74,11 @@
                         <select class="h-8 rounded border-slate-400 border" id="grupo" name="grupo" required>
                         </select><br><br>
                     </div>
-                    <button id="btnAgregarGrupo" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg" type="button">
+                    <button id="btnAgregarGrupo" class="bg-[#730027] text-white font-medium w-36 h-10 rounded-lg"
+                        type="button">
                         Agregar
                     </button>
-                </div>                
-                <!-- Fin de nuevos campos -->
+                </div>
                 <div class="h-44">
                     <label class="font-medium text-sm ml-9" for="textoOficio">TEXTO DE OFICIO</label><br>
                     <textarea class="rounded border-slate-400 border w-10/12 h-44 ml-9" id="textoOficio"
@@ -85,7 +100,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-// INICIO DE LOS SCRIPS PARA EL MENU TOMADO DE LA BASE DE DATOS
+        // INICIO DE LOS SCRIPS PARA EL MENU TOMADO DE LA BASE DE DATOS
 
         $(document).ready(function () {
             $.get('/obtener-maestros', function (maestros) {
@@ -146,7 +161,40 @@
             textoOficio.value += grupo;
         });
     </script>
-    
+    <script>
+
+        document.getElementById('btnAgregarasunto').addEventListener('click', function () {
+            const asunto = document.getElementById('asunto').value;
+            const textoOficio = document.getElementById('textoOficio');
+            textoOficio.value += asunto;
+        });
+    </script>
+    <script>
+
+        document.getElementById('btnAgregarfecha').addEventListener('click', function () {
+            const fecha = document.getElementById('fecha').value;
+            const textoOficio = document.getElementById('textoOficio');
+            textoOficio.value += fecha;
+        });
+    </script>
+    <script>
+
+        document.getElementById('btnAgregarmaestro').addEventListener('click', function () {
+            const maestro = document.getElementById('maestro').value;
+            const textoOficio = document.getElementById('textoOficio');
+            textoOficio.value += maestro;
+        });
+    </script>
+
+<script>
+
+    document.getElementById('btnAgregarespecialidad').addEventListener('click', function () {
+        const especialidades = document.getElementById('especialidades').value;
+        const textoOficio = document.getElementById('textoOficio');
+        textoOficio.value += especialidades;
+    });
+</script>
+
 </body>
 
 </html>
