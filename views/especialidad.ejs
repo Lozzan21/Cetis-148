@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Especialidades</title>
+</head>
+<body onload="mostrarEspecialidades()">
+    <h1>Registro de Especialidades</h1>
+    <form id="formAgregarEspecialidad">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <button type="button" onclick="agregarEspecialidad()">Agregar Especialidad</button>
+    </form>
+    <br>
+    <form id="formBorrarEspecialidad">
+        <label for="nombreBorrar">Nombre de la especialidad a borrar:</label>
+        <input type="text" id="nombreBorrar" name="nombre" required><br><br>
+        <button type="button" onclick="borrarEspecialidad()">Borrar Especialidad</button>
+    </form>
+    <br>
+    <div id="mensaje"></div>
+    <div id="listaEspecialidades"></div>
+    
+    <script>
+        function agregarEspecialidad() {
+            var nombre = document.getElementById("nombre").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre de la especialidad.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/especialidades/agregar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarEspecialidades(); // Actualiza la lista de especialidades después de agregar una
+                    document.getElementById("nombre").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function borrarEspecialidad() {
+            var nombre = document.getElementById("nombreBorrar").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre de la especialidad a borrar.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/especialidades/borrar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarEspecialidades(); // Actualiza la lista de especialidades después de borrar una
+                    document.getElementById("nombreBorrar").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function mostrarEspecialidades() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/mostrar-especialidades", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("listaEspecialidades").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

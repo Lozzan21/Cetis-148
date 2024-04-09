@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Grupos</title>
+</head>
+<body onload="mostrarGrupos()">
+    <h1>Registro de Grupos</h1>
+    <form id="formAgregarGrupo">
+        <label for="nombreGrupo">Nombre del grupo:</label>
+        <input type="text" id="nombreGrupo" name="nombreGrupo" required><br><br>
+        <button type="button" onclick="agregarGrupo()">Agregar Grupo</button>
+    </form>
+    <br>
+    <form id="formBorrarGrupo">
+        <label for="nombreGrupoBorrar">Nombre del grupo a borrar:</label>
+        <input type="text" id="nombreGrupoBorrar" name="nombreGrupoBorrar" required><br><br>
+        <button type="button" onclick="borrarGrupo()">Borrar Grupo</button>
+    </form>
+    <br>
+    <div id="mensaje"></div>
+    <div id="listaGrupos"></div>
+    
+    <script>
+        function agregarGrupo() {
+            var nombre = document.getElementById("nombreGrupo").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del grupo.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/grupos/agregar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarGrupos(); // Actualiza la lista de grupos después de agregar uno
+                    document.getElementById("nombreGrupo").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function borrarGrupo() {
+            var nombre = document.getElementById("nombreGrupoBorrar").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del grupo a borrar.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/grupos/borrar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarGrupos(); // Actualiza la lista de grupos después de borrar uno
+                    document.getElementById("nombreGrupoBorrar").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function mostrarGrupos() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/mostrar-grupos", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("listaGrupos").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

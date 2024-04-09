@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Maestros</title>
+</head>
+<body onload="mostrarMaestros()">
+    <h1>Registro de Maestros</h1>
+    <form id="formAgregarMaestro">
+        <label for="nombreMaestro">Nombre del maestro:</label>
+        <input type="text" id="nombreMaestro" name="nombreMaestro" required><br><br>
+        <button type="button" onclick="agregarMaestro()">Agregar Maestro</button>
+    </form>
+    <br>
+    <form id="formBorrarMaestro">
+        <label for="nombreMaestroBorrar">Nombre del maestro a borrar:</label>
+        <input type="text" id="nombreMaestroBorrar" name="nombreMaestroBorrar" required><br><br>
+        <button type="button" onclick="borrarMaestro()">Borrar Maestro</button>
+    </form>
+    <br>
+    <div id="mensaje"></div>
+    <div id="listaMaestros"></div>
+    
+    <script>
+        function agregarMaestro() {
+            var nombre = document.getElementById("nombreMaestro").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del maestro.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/maestros/agregar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarMaestros(); // Actualiza la lista de maestros después de agregar uno
+                    document.getElementById("nombreMaestro").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function borrarMaestro() {
+            var nombre = document.getElementById("nombreMaestroBorrar").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del maestro a borrar.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/maestros/borrar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarMaestros(); // Actualiza la lista de maestros después de borrar uno
+                    document.getElementById("nombreMaestroBorrar").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function mostrarMaestros() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/mostrar-maestros", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("listaMaestros").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

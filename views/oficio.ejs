@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar PDF</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #pdfPreview {
+            width: 100%; /* Ajustar el ancho según tus necesidades */
+            height: 500px; /* Ajustar la altura según tus necesidades */
+            border: 1px solid #ccc; /* Borde opcional */
+            margin-top: 20px; /* Margen superior opcional */
+        }
+    </style>
+</head>
+<body>
+    <h1>Generar PDF</h1>
+    <form id="pdfForm" action="/generar-pdf" method="GET" target="pdfFrame">
+        
+        <div class="select-container">
+            <label for="asunto">Asunto:</label>
+            <select id="asunto" name="asunto" required>
+                <!-- Opciones de maestros se agregarán aquí -->
+            </select>
+            <button type="button" onclick="agregarTexto('asunto')">Agregar</button>
+            </div>
+
+        <div class="select-container">
+        <label for="maestro">Maestro:</label>
+        <select id="maestro" name="maestro" required>
+            <!-- Opciones de maestros se agregarán aquí -->
+        </select>
+        <button type="button" onclick="agregarTexto('maestro')">Agregar</button>
+        </div>
+
+        <div class="select-container">
+        <label for="materia">Materia:</label>
+        <select id="materia" name="materia" required>
+            <!-- Opciones de materias se agregarán aquí -->
+        </select>
+        <button type="button" onclick="agregarTexto('materia')">Agregar</button>
+        </div>
+
+        <div class="select-container">
+        <label for="especialidad">Especialidad:</label>
+        <select id="especialidad" name="especialidad" required>
+            <!-- Opciones de especialidades se agregarán aquí -->
+        </select>
+        <button type="button" onclick="agregarTexto('especialidad')">Agregar</button>
+        </div>
+
+        <div class="select-container">
+        <label for="grupo">Grupo:</label>
+        <select id="grupo" name="grupo" required>
+            <!-- Opciones de grupos se agregarán aquí -->
+        </select>
+        <button type="button" onclick="agregarTexto('grupo')">Agregar</button>
+        </div>
+
+        <div class="select-container">
+        <label for="fecha" class="bold-label">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required><br><br>
+        <button type="button" onclick="agregarTexto('fecha')">Agregar</button>
+         </div>
+
+         <div class="select-container">
+            <label for="texto" class="bold-label"></label>
+            <textarea id="texto" name="texto" required rows="4" cols="50"></textarea>
+        </div>
+        
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox">
+            <label for="agregarTablaCheckbox">Avanzados</label>
+        </div>
+
+        <!-- Botón para generar el PDF -->
+        <button type="button" onclick="generarPDF()">Vista Previa</button>
+        <iframe id="pdfPreview" name="pdfFrame" frameborder="0"></iframe>
+
+    <script> 
+        $(document).ready(function() {
+            // Hacer una solicitud AJAX para obtener los maestros
+            $.get('/obtener-asuntos', function(data) {
+                // Agregar cada maestro como una opción en el menú desplegable
+                data.forEach(function(asunto) {
+                    $('#asunto').append($('<option>', {
+                        value: asunto.nombre,
+                        text: asunto.nombre
+                    }));
+                });
+            });
+
+        $(document).ready(function() {
+            // Hacer una solicitud AJAX para obtener los maestros
+            $.get('/obtener-maestros', function(data) {
+                // Agregar cada maestro como una opción en el menú desplegable
+                data.forEach(function(maestro) {
+                    $('#maestro').append($('<option>', {
+                        value: maestro.nombre,
+                        text: maestro.nombre
+                    }));
+                });
+            });
+
+            // Hacer una solicitud AJAX para obtener las materias
+            $.get('/obtener-materias', function(data) {
+                // Agregar cada materia como una opción en el menú desplegable
+                data.forEach(function(materia) {
+                    $('#materia').append($('<option>', {
+                        value: materia.nombre,
+                        text: materia.nombre
+                    }));
+                });
+            });
+
+            // Hacer una solicitud AJAX para obtener las especialidades
+            $.get('/obtener-especialidades', function(data) {
+                // Agregar cada especialidad como una opción en el menú desplegable
+                data.forEach(function(especialidad) {
+                    $('#especialidad').append($('<option>', {
+                        value: especialidad.nombre,
+                        text: especialidad.nombre
+                    }));
+                });
+            });
+
+            // Hacer una solicitud AJAX para obtener los grupos
+            $.get('/obtener-grupos', function(data) {
+                // Agregar cada grupo como una opción en el menú desplegable
+                data.forEach(function(grupo) {
+                    $('#grupo').append($('<option>', {
+                        value: grupo.nombre,
+                        text: grupo.nombre
+                    }));
+                });
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Hacer una solicitud AJAX para obtener los maestros, materias, especialidades y grupos...
+        });
+
+        // Función para agregar el valor seleccionado al campo de texto
+        function agregarTexto(selectId) {
+            var selectValue = $('#' + selectId).val();
+            var textoActual = $('#texto').val();
+            if (textoActual !== '') {
+                textoActual += ', ';
+            }
+            $('#texto').val(textoActual + selectValue);
+        }
+    </script>
+
+<script>
+    $(document).ready(function() {
+        // Manejar el cambio en el estado del checkbox
+        $('#agregarTablaCheckbox').change(function() {
+            if ($(this).is(':checked')) {
+                // Redireccionar a la vista oficios.ejs si el checkbox está seleccionado
+                window.location.href = '/oficios';
+            }
+        });
+    });
+</script>
+
+<script>
+    // Función para generar el PDF y mostrar una vista previa en el iframe
+    function generarPDF() {
+        // Enviar el formulario para generar el PDF
+        document.getElementById('pdfForm').submit();
+    }
+</script>
+
+</body>
+</html>

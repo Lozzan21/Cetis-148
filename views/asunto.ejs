@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asuntos</title>
+</head>
+<body onload="mostrarAsuntos()">
+    <h1>Registro de Asuntos</h1>
+    <form id="formAgregarAsunto">
+        <label for="nombreAsunto">Nombre del asunto:</label>
+        <input type="text" id="nombreAsunto" name="nombreAsunto" required><br><br>
+        <button type="button" onclick="agregarAsunto()">Agregar Asunto</button>
+    </form>
+    <br>
+    <form id="formBorrarAsunto">
+        <label for="nombreAsuntoBorrar">Nombre del asunto a borrar:</label>
+        <input type="text" id="nombreAsuntoBorrar" name="nombreAsuntoBorrar" required><br><br>
+        <button type="button" onclick="borrarAsunto()">Borrar Asunto</button>
+    </form>
+    <br>
+    <div id="mensaje"></div>
+    <div id="listaAsuntos"></div>
+    
+    <script>
+        function agregarAsunto() {
+            var nombre = document.getElementById("nombreAsunto").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del asunto.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/asuntos/agregar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarAsuntos(); // Actualiza la lista de asuntos después de agregar uno
+                    document.getElementById("nombreAsunto").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function borrarAsunto() {
+            var nombre = document.getElementById("nombreAsuntoBorrar").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del asunto a borrar.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/asuntos/borrar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarAsuntos(); // Actualiza la lista de asuntos después de borrar uno
+                    document.getElementById("nombreAsuntoBorrar").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+
+        function mostrarAsuntos() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/mostrar-asuntos", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("listaAsuntos").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
