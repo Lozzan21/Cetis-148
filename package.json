@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "mysql": "^2.18.1",
+    "pdfkit": "^0.15.0",
+    "pdfkit-table": "^0.1.99"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}

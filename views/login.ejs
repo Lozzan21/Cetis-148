@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Iniciar sesión</title>
+    <link rel="icon" href="/img/icono.png"> 
 </head>
-<body>
-    <h1>Iniciar Sesión</h1>
-    <form action="/login" method="POST">
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" required><br><br>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+<body class="bg-cover bg-center h-screen flex items-center justify-center" style="background-image: url('/img/fondologin.png')">
+
+    <div class="bg-slate-200 p-8 rounded-lg flex space-x-12 justify-center items-center">
+        <img class="h-36 w-32 duration-150 hover:scale-110" src="/img/logo.png" alt="logo">
+        <form class="grid" action="/login" method="POST">
+            <label class="font-medium" for="usuario">Usuario:</label>
+            <input class="p-1 rounded-md border border-gray-400 w-72 hover:border-gray-600 h-9" type="text" id="usuario" name="usuario" required><br><br>
+            <label class="font-medium" for="contraseña">Contraseña:</label>
+            <input class="p-1 rounded-md border border-gray-400 w-72 hover:border-gray-600 h-9" type="password" id="contraseña" name="contraseña" required><br><br>
+            <button class="bg-[#730027] text-white p-2 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="submit">Iniciar sesión</button>
+        </form>
+    </div>
+    
+    
 </body>
 </html>

@@ -5,6 +5,8 @@ const pdfGeneratorRouter = require('./pdfGenerator');
 const app = express();
 const port = 3000;
 
+app.use(express.static(__dirname + "/public"));
+
 
 // Configuración de la conexión a la base de datos MySQL
 const db = mysql.createConnection({
