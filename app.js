@@ -294,6 +294,36 @@ app.get('/mostrar-asuntos', (req, res) => {
   });
 });
 
+// Borrar usuario de la base de datos
+app.post('/usuarios/borrar', (req, res) => {
+  const { nombre } = req.body;
+
+  db.query('DELETE FROM users WHERE usuario = ?', [nombre], (err, result) => {
+      if (err) {
+          res.status(500).send('Error al borrar el usuario');
+          return;
+      }
+      res.send('<p>Usuario borrado correctamente</p>');
+  });
+});
+
+// Obtener y mostrar todos los usuarios
+app.get('/mostrar-usuarios', (req, res) => {
+  db.query('SELECT * FROM users', (err, result) => {
+      if (err) {
+          res.status(500).send('Error al obtener los usuarios');
+          return;
+      }
+      let listaUsuarios = '<h2></h2><ul>';
+      result.forEach(usuario => {
+          listaUsuarios += `<li>${usuario.usuario}</li>`; // Suponiendo que cada usuario tiene un campo 'nombre'
+      });
+      listaUsuarios += '</ul>';
+      res.send(listaUsuarios);
+  });
+});
+
+
 app.get('/oficios', (req, res) => {
   // Renderizar la vista oficios.ejs
   res.render('oficios');
@@ -374,6 +404,7 @@ app.get('/obtener-grupos', (req, res) => {
       res.json(result); // Enviar la lista de grupos como respuesta JSON
   });
 });
+
 
 
 // Iniciar el servidor

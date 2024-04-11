@@ -8,7 +8,7 @@
     <link rel="icon" href="/img/icono.png"> 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="grid grid-cols-2 h-screen">
+<body class="grid grid-cols-2 h-screen" onload="mostrarUsuarios()">
 
     <div class="bg-[#730027] grid justify-center items-center -space-y-72">
         <h1 class="text-white text-3xl font-medium">Registro de Usuario</h1>
@@ -24,7 +24,6 @@
                     <label class="font-medium text-white" for="contraseña">Contraseña:</label>
                     <input class="rounded-md h-8 w-80 border border-gray-200 hover:border-black p-1" type="password" id="contraseña" name="contraseña" required><br><br>
                 </div>
-
                 
             </div>
             <button class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="submit">Registrar</button>
@@ -35,18 +34,49 @@
 
 
 
-
-
-
-    
-
     <div class="">
 
-       <h1 class="font-medium text-2xl">Usuarios registrados</h1>
+        <h1 class="font-medium text-2xl">Usuarios registrados</h1>
+        <div id="listaUsuarios"></div>
+        <form id="formBorrarUsuario">
+         <label for="nombreUsuarioBorrar">Nombre del usuario a borrar:</label>
+         <input type="text" id="nombreUsuarioBorrar" name="nombreUsuarioBorrar" required><br><br>
+         <button type="button" onclick="borrarUsuario()">Borrar Usuario</button>
+     </form>
+     <div id="mensaje"></div>
 
-    </div>
     
-  
-    
+    <script>
+        function mostrarUsuarios() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/mostrar-usuarios", true); // Ruta para obtener los usuarios desde el backend
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("listaUsuarios").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+
+        function borrarUsuario() {
+            var nombre = document.getElementById("nombreUsuarioBorrar").value;
+            if (!nombre.trim()) {
+                alert("Por favor, ingresa el nombre del usuario a borrar.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/usuarios/borrar", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("mensaje").innerHTML = xhr.responseText;
+                    mostrarUsuarios(); // Actualiza la lista de usuarios después de borrar uno
+                    document.getElementById("nombreUsuarioBorrar").value = ""; // Limpia el campo de entrada
+                }
+            };
+            xhr.send("nombre=" + nombre);
+        }
+    </script>
+
 </body>
 </html>
