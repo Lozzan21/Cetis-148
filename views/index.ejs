@@ -4,17 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Principal</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Bienvenido a la página principal</h1>
-    <h2>¿Qué deseas hacer?</h2>
-    <ul>
-        <li><a href="/maestros">Registrar Maestros</a></li>
-        <li><a href="/materias">Registrar Materias</a></li>
-        <li><a href="/especialidad">Registrar Especialidades</a></li>
-        <li><a href="/grupos">Registrar Grupos</a></li>
-        <li><a href="/oficio">Crear Oficios</a></li>
-        <li><a href="/asunto">Asuntos</a></li>
-    </ul>
+    <div class="bg-[#730027] p-1 pb-2 pr-4 flex justify-between items-center">
+        <div>
+            <img class="h-12 w-11" src="/img/logo2.png" alt="logo">
+        </div>
+
+        <div class="font-medium text-white space-x-2">
+            <a class="duration-150 hover:bg-white hover:text-black p-1 rounded-md" href="/maestros">Maestros</a>
+            <a class="duration-150 hover:bg-white hover:text-black p-1 rounded-md" href="/materias">Materias</a>
+            <a class="duration-150 hover:bg-white hover:text-black p-1 rounded-md" href="/especialidad">Especialidades</a>
+            <a class="duration-150 hover:bg-white hover:text-black p-1 rounded-md" href="/grupos">Grupos</a>
+            <a class="duration-150 hover:bg-white hover:text-black p-1 rounded-md" href="/asunto">Asuntos</a>
+        </div>
+        
+    </div>
+
+    <div class="bg-gray-400 p-12">
+        <a class="bg-[#730027] p-2 rounded-md text-white font-medium px-5" href="/oficio">Crear oficio</a>
+    </div>
+
+    
+
 </body>
 </html>
