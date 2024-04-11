@@ -26,7 +26,7 @@
                 </div>
                 
             </div>
-            <button class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="submit">Registrar</button>
+            <button  class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="submit">Registrar</button>
         </form>
  
     </div>
@@ -34,18 +34,47 @@
 
 
 
-    <div class="">
 
-        <h1 class="font-medium text-2xl">Usuarios registrados</h1>
-        <div id="listaUsuarios"></div>
-        <form id="formBorrarUsuario">
-         <label for="nombreUsuarioBorrar">Nombre del usuario a borrar:</label>
-         <input type="text" id="nombreUsuarioBorrar" name="nombreUsuarioBorrar" required><br><br>
-         <button type="button" onclick="borrarUsuario()">Borrar Usuario</button>
-     </form>
-     <div id="mensaje"></div>
 
-    
+
+
+    <div class="p-12 flex space-x-14">
+
+         <div class="space-y-5">
+
+            <h1 class="font-medium text-2xl">Usuarios registrados</h1>
+            <div class="italic" id="listaUsuarios"></div>
+
+            <div>
+                <button id="btneliminarusuario" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar()">Eliminar usuario</button>
+            </div>
+
+        </div>
+
+
+
+
+        <div id="contenidoDiv" class="duration-150 hidden space-y-6">
+            <h1 class="font-medium text-2xl">Eliminar usuario</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+                <form class="grid" id="formBorrarUsuario">
+                    <label class="text-white font-medium" for="nombreUsuarioBorrar">Nombre del usuario a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreUsuarioBorrar" name="nombreUsuarioBorrar" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarUsuario()">Borrar usuario</button>
+                </form>
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+   
+
     <script>
         function mostrarUsuarios() {
             var xhr = new XMLHttpRequest();
@@ -77,6 +106,16 @@
             xhr.send("nombre=" + nombre);
         }
     </script>
+
+
+<script>
+    function MEliminar() {
+      var div = document.getElementById("contenidoDiv");
+      div.classList.toggle("hidden");
+      var div = document.getElementById("btneliminarusuario");
+      div.classList.toggle("hidden");
+    }
+  </script>
 
 </body>
 </html>
