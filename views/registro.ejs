@@ -5,17 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="icono" href="/img/logo.png">
     <title>Registro de Usuario</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Registro de Usuario</h1>
-    <img class="h-32 w-28" src="/img/logo.png" alt="logo">
-    <form action="/registro" method="POST">
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" required><br><br>
-        <button type="submit">Registrarse</button>
-    </form>
-    <br>
+<body class="grid grid-cols-2 h-screen">
+
+    <div class="bg-[#730027] grid justify-center items-center -space-y-72">
+        <h1 class="text-white text-3xl font-medium">Registro de Usuario</h1>
+        <form class="grid" action="/registro" method="POST">
+            <div class="space-y-6">
+
+                <div class="grid">
+                    <label class="font-medium text-white" for="usuario">Usuario:</label>
+                    <input class="rounded-md h-8 w-80 border border-gray-200 hover:border-black p-1" type="text" id="usuario" name="usuario" required>
+                </div>
+
+                <div class="grid">
+                    <label class="font-medium text-white" for="contraseña">Contraseña:</label>
+                    <input class="rounded-md h-8 w-80 border border-gray-200 hover:border-black p-1" type="password" id="contraseña" name="contraseña" required><br><br>
+                </div>
+
+                
+            </div>
+            <button class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="submit">Registrar</button>
+        </form>
+ 
+    </div>
+
+
+
+
+
+
+
+    
+
+    <div class="">
+
+       <h1 class="font-medium text-2xl">Usuarios registrados</h1>
+
+    </div>
+    
+  
+    
 </body>
 </html>
