@@ -16,5 +16,32 @@
         <li><a href="/oficio">Crear Oficios</a></li>
         <li><a href="/asunto">Asuntos</a></li>
     </ul>
+    <h2>PDFs en la base de datos</h2>
+    <ul id="pdfList"></ul>
+    <button onclick="obtenerPDFs()">Mostrar PDFs</button>
+    
+    <script>
+        function obtenerPDFs() {
+            // Realizar una solicitud para obtener los PDFs de la base de datos
+            fetch('/obtener-pdfs')
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar la lista de PDFs antes de agregar los nuevos
+                    const pdfList = document.getElementById('pdfList');
+                    pdfList.innerHTML = '';
+
+                    // Mostrar cada PDF en la lista
+                    data.forEach(pdf => {
+                        const pdfItem = document.createElement('li');
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = `data:application/pdf;base64,${pdf.pdfContent}`;
+                        pdfLink.textContent = `PDF ${pdf.id}`;
+                        pdfItem.appendChild(pdfLink);
+                        pdfList.appendChild(pdfItem);
+                    });
+                })
+                .catch(error => console.error('Error al obtener los PDFs:', error));
+        }
+    </script>
 </body>
 </html>

@@ -3,9 +3,12 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const pdfGeneratorRouter = require('./pdfGenerator');
 const app = express();
+const fs = require('fs');
 const port = 3000;
 
 app.use(express.static(__dirname + "/public"));
+// Configurar el middleware para analizar los datos del formulario
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // Configuración de la conexión a la base de datos MySQL
@@ -323,7 +326,6 @@ app.get('/mostrar-usuarios', (req, res) => {
   });
 });
 
-
 app.get('/oficios', (req, res) => {
   // Renderizar la vista oficios.ejs
   res.render('oficios');
@@ -405,7 +407,30 @@ app.get('/obtener-grupos', (req, res) => {
   });
 });
 
+app.post('/generar-y-guardar-pdf', async (req, res) => {
+  try {
+    // Capturar el contenido del PDF enviado desde el formulario
+    const pdfContent = req.body.pdfContent;
 
+    // Convertir el PDF en un objeto Buffer
+    const pdfBuffer = Buffer.from(pdfContent, 'base64');
+
+    // Guardar el PDF en la base de datos
+    const sql = 'INSERT INTO pdfs (pdf_blob) VALUES (?)';
+    db.query(sql, [pdfBuffer], (err, result) => {
+      if (err) {
+        console.error('Error al insertar el PDF en la base de datos:', err);
+        res.status(500).send('Error interno del servidor al guardar el PDF en la base de datos');
+        return;
+      }
+      console.log('PDF guardado en la base de datos');
+      res.send('PDF guardado correctamente en la base de datos');
+    });
+  } catch (error) {
+    console.error('Error al guardar el PDF en la base de datos:', error);
+    res.status(500).send('Error interno del servidor');
+  }
+});
 
 // Iniciar el servidor
 app.listen(port, () => {
