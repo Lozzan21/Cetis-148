@@ -18,7 +18,7 @@
 </head>
 <body>
     <h1>Generar PDF</h1>
-    <form id="pdfForm" action="/generar-pdf" method="GET" target="pdfFrame">
+    <form id="pdfForm" action="/generar-y-guardar-pdf" method="post" target="pdfFrame">
         
         <div class="select-container">
             <label for="asunto">Asunto:</label>
@@ -77,8 +77,11 @@
             <label for="agregarTablaCheckbox">Avanzados</label>
         </div>
 
-        <!-- Botón para generar el PDF -->
         <button type="button" onclick="generarPDF()">Vista Previa</button>
+
+        <input type="hidden" id="pdfContent" name="pdfContent">
+        <button type="submit">Generar y Guardar PDF</button>
+        
         <iframe id="pdfPreview" name="pdfFrame" frameborder="0"></iframe>
 
     <script> 
@@ -156,7 +159,6 @@
             $('#texto').val(textoActual + selectValue);
         }
     </script>
-
 <script>
     $(document).ready(function() {
         // Manejar el cambio en el estado del checkbox
@@ -168,14 +170,19 @@
         });
     });
 </script>
-
 <script>
-    // Función para generar el PDF y mostrar una vista previa en el iframe
     function generarPDF() {
-        // Enviar el formulario para generar el PDF
+        // Obtener el contenido del PDF desde el iframe
+        var pdfContent = document.getElementById('pdfPreview').contentWindow.document.body.innerHTML;
+    
+        // Establecer el contenido del PDF en un campo oculto del formulario
+        document.getElementById('pdfContent').value = pdfContent;
+    
+        // Enviar el formulario para generar y guardar el PDF
         document.getElementById('pdfForm').submit();
     }
-</script>
+    </script>
+
 
 </body>
 </html>
