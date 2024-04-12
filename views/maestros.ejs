@@ -4,23 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Maestros</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="mostrarMaestros()">
-    <h1>Registro de Maestros</h1>
-    <form id="formAgregarMaestro">
-        <label for="nombreMaestro">Nombre del maestro:</label>
-        <input type="text" id="nombreMaestro" name="nombreMaestro" required><br><br>
-        <button type="button" onclick="agregarMaestro()">Agregar Maestro</button>
-    </form>
-    <br>
-    <form id="formBorrarMaestro">
-        <label for="nombreMaestroBorrar">Nombre del maestro a borrar:</label>
-        <input type="text" id="nombreMaestroBorrar" name="nombreMaestroBorrar" required><br><br>
-        <button type="button" onclick="borrarMaestro()">Borrar Maestro</button>
-    </form>
-    <br>
-    <div id="mensaje"></div>
-    <div id="listaMaestros"></div>
+<body class="grid grid-cols-2 h-screen" onload="mostrarMaestros()">
+
+
+
+    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
+
+        <h1 class="text-white font-medium text-3xl">Registro de Maestros</h1>
+        <form class="grid" id="formAgregarMaestro">
+            <label class="text-white font-medium" for="nombreMaestro">Nombre del maestro:</label>
+            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreMaestro" name="nombreMaestro" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarMaestro()">Agregar Maestro</button>
+        </form>
+
+    </div>
+
+
+
+    <div class="p-10 flex space-x-14">
+
+        <div class="space-y-5">
+
+            <h1 class="font-medium text-2xl">Maestros registrados</h1>
+            <div class="italic" id="listaMaestros"></div>
+
+            <div>
+                <button id="btneliminarusuario2" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar2()">Eliminar usuario</button>
+            </div>
+
+        </div>
+
+        <div id="contenidoDiv2" class="duration-150 hidden space-y-6">
+
+            <h1 class="font-medium text-2xl">Eliminar maestro</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+
+                <form class="grid" id="formBorrarMaestro">
+                    <label class="text-white font-medium" for="nombreMaestroBorrar">Nombre del maestro a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreMaestroBorrar" name="nombreMaestroBorrar" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarMaestro()">Borrar Maestro</button>
+                </form>
+                
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+            </div>
+
+        </div>
+        
+        
+    </div>
+
+    
+   
+    
     
     <script>
         function agregarMaestro() {
@@ -72,5 +111,15 @@
             xhr.send();
         }
     </script>
+
+    <script>
+    function MEliminar2() {
+      var div = document.getElementById("contenidoDiv2");
+      div.classList.toggle("hidden");
+      var div = document.getElementById("btneliminarusuario2");
+      div.classList.toggle("hidden");
+    }
+  </script>
+
 </body>
 </html>

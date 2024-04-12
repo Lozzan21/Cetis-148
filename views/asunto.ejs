@@ -4,23 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Asuntos</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="mostrarAsuntos()">
-    <h1>Registro de Asuntos</h1>
-    <form id="formAgregarAsunto">
-        <label for="nombreAsunto">Nombre del asunto:</label>
-        <input type="text" id="nombreAsunto" name="nombreAsunto" required><br><br>
-        <button type="button" onclick="agregarAsunto()">Agregar Asunto</button>
-    </form>
-    <br>
-    <form id="formBorrarAsunto">
-        <label for="nombreAsuntoBorrar">Nombre del asunto a borrar:</label>
-        <input type="text" id="nombreAsuntoBorrar" name="nombreAsuntoBorrar" required><br><br>
-        <button type="button" onclick="borrarAsunto()">Borrar Asunto</button>
-    </form>
-    <br>
-    <div id="mensaje"></div>
-    <div id="listaAsuntos"></div>
+<body class="grid grid-cols-2 h-screen" onload="mostrarAsuntos()">
+
+    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
+
+        <h1 class="text-white font-medium text-3xl">Registro de Asuntos</h1>
+        <form class="grid" id="formAgregarAsunto">
+            <label class="text-white font-medium" for="nombreAsunto">Nombre del asunto:</label>
+            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreAsunto" name="nombreAsunto" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarAsunto()">Agregar Asunto</button>
+        </form>
+
+    </div>
+
+
+    <div class="p-10 flex space-x-14">
+
+        <div class="space-y-5">
+
+            <h1 class="font-medium text-2xl">Asuntos registrados</h1>
+            <div class="italic" id="listaAsuntos"></div>
+
+            <div>
+                <button id="btneliminarasunto" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar6()">Eliminar asunto</button>
+            </div>
+
+        </div>
+
+
+        <div id="contenidoDiv6" class="duration-150 hidden space-y-6">
+
+            <h1 class="font-medium text-2xl">Eliminar asunto</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+
+                <form class="grid" id="formBorrarAsunto">
+                    <label class="text-white font-medium" for="nombreAsuntoBorrar">Nombre del asunto a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreAsuntoBorrar" name="nombreAsuntoBorrar" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarAsunto()">Borrar Asunto</button>
+                </form>
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+
+            </div>
+
+        </div>
+    </div>
+    
+   
+    
+    
     
     <script>
         function agregarAsunto() {
@@ -72,5 +107,15 @@
             xhr.send();
         }
     </script>
+
+    <script>
+    function MEliminar6() {
+      var div = document.getElementById("contenidoDiv6");
+      div.classList.toggle("hidden");
+      var div = document.getElementById("btneliminarasunto");
+      div.classList.toggle("hidden");
+    }
+  </script>
+
 </body>
 </html>

@@ -4,23 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Materias</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="mostrarMaterias()">
-    <h1>Registro de Materias</h1>
-    <form id="formAgregarMateria">
-        <label for="nombreMateria">Nombre de la materia:</label>
-        <input type="text" id="nombreMateria" name="nombreMateria" required><br><br>
-        <button type="button" onclick="agregarMateria()">Agregar Materia</button>
-    </form>
-    <br>
-    <form id="formBorrarMateria">
-        <label for="nombreMateriaBorrar">Nombre de la materia a borrar:</label>
-        <input type="text" id="nombreMateriaBorrar" name="nombreMateriaBorrar" required><br><br>
-        <button type="button" onclick="borrarMateria()">Borrar Materia</button>
-    </form>
-    <br>
-    <div id="mensaje"></div>
-    <div id="listaMaterias"></div>
+<body class="grid grid-cols-2 h-screen" onload="mostrarMaterias()">
+
+    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
+       
+        <h1 class="text-white font-medium text-3xl">Registro de Materias</h1>
+        <form class="grid" id="formAgregarMateria">
+            <label class="text-white font-medium" for="nombreMateria">Nombre de la materia:</label>
+            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreMateria" name="nombreMateria" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarMateria()">Agregar Materia</button>
+        </form>
+    </div>
+
+
+    <div class="p-10 flex space-x-14">
+
+        <div class="space-y-5">
+
+            <h1 class="font-medium text-2xl">Maestros registrados</h1>
+            <div class="italic" id="listaMaterias"></div>
+
+            <div>
+                <button id="btneliminarusuario3" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar3()">Eliminar materia</button>
+            </div>
+
+        </div>
+
+        <div id="contenidoDiv3" class="duration-150 hidden space-y-6">
+
+            <h1 class="font-medium text-2xl">Eliminar materia</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+
+                <form class="grid" id="formBorrarMateria">
+                    <label class="text-white font-medium" for="nombreMateriaBorrar">Nombre de la materia a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreMateriaBorrar" name="nombreMateriaBorrar" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarMateria()">Borrar Materia</button>
+                </form>
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+    
+    
     
     <script>
         function agregarMateria() {
@@ -72,5 +107,15 @@
             xhr.send();
         }
     </script>
+
+    <script>
+    function MEliminar3() {
+      var div = document.getElementById("contenidoDiv3");
+      div.classList.toggle("hidden");
+      var div = document.getElementById("btneliminarusuario3");
+      div.classList.toggle("hidden");
+    }
+  </script>
+
 </body>
 </html>

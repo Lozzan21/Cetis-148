@@ -4,23 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Grupos</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="mostrarGrupos()">
-    <h1>Registro de Grupos</h1>
-    <form id="formAgregarGrupo">
-        <label for="nombreGrupo">Nombre del grupo:</label>
-        <input type="text" id="nombreGrupo" name="nombreGrupo" required><br><br>
-        <button type="button" onclick="agregarGrupo()">Agregar Grupo</button>
-    </form>
-    <br>
-    <form id="formBorrarGrupo">
-        <label for="nombreGrupoBorrar">Nombre del grupo a borrar:</label>
-        <input type="text" id="nombreGrupoBorrar" name="nombreGrupoBorrar" required><br><br>
-        <button type="button" onclick="borrarGrupo()">Borrar Grupo</button>
-    </form>
-    <br>
-    <div id="mensaje"></div>
-    <div id="listaGrupos"></div>
+<body class="grid grid-cols-2 h-screen" onload="mostrarGrupos()">
+
+    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
+
+        <h1 class="text-white font-medium text-3xl">Registro de Grupos</h1>
+        <form class="grid" id="formAgregarGrupo">
+            <label class="text-white font-medium" for="nombreGrupo">Nombre del grupo:</label>
+            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreGrupo" name="nombreGrupo" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarGrupo()">Agregar Grupo</button>
+        </form>
+
+    </div>
+
+
+    <div class="p-10 flex space-x-14">
+
+        <div class="space-y-5">
+
+            <h1 class="font-medium text-2xl">Grupos registrados</h1>
+            <div class="italic" id="listaGrupos"></div>
+
+            <div>
+                <button id="btneliminargrupo" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar5()">Eliminar grupo</button>
+            </div>
+
+        </div>
+
+        <div id="contenidoDiv5" class="duration-150 hidden space-y-6">
+
+            <h1 class="font-medium text-2xl">Eliminar grupo</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+
+                <form class="grid" id="formBorrarGrupo">
+                    <label class="text-white font-medium" for="nombreGrupoBorrar">Nombre del grupo a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreGrupoBorrar" name="nombreGrupoBorrar" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarGrupo()">Borrar Grupo</button>
+                </form>
+                
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    
+    
+    
     
     <script>
         function agregarGrupo() {
@@ -72,5 +108,15 @@
             xhr.send();
         }
     </script>
+
+    <script>
+    function MEliminar5() {
+      var div = document.getElementById("contenidoDiv5");
+      div.classList.toggle("hidden");
+      var div = document.getElementById("btneliminargrupo");
+      div.classList.toggle("hidden");
+    }
+  </script>
+
 </body>
 </html>

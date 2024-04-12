@@ -4,23 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Especialidades</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="mostrarEspecialidades()">
-    <h1>Registro de Especialidades</h1>
-    <form id="formAgregarEspecialidad">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-        <button type="button" onclick="agregarEspecialidad()">Agregar Especialidad</button>
-    </form>
-    <br>
-    <form id="formBorrarEspecialidad">
-        <label for="nombreBorrar">Nombre de la especialidad a borrar:</label>
-        <input type="text" id="nombreBorrar" name="nombre" required><br><br>
-        <button type="button" onclick="borrarEspecialidad()">Borrar Especialidad</button>
-    </form>
-    <br>
-    <div id="mensaje"></div>
-    <div id="listaEspecialidades"></div>
+<body class="grid grid-cols-2 h-screen" onload="mostrarEspecialidades()">
+
+    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
+
+        <h1 class="text-white font-medium text-3xl">Registro de Especialidades</h1>
+        <form class="grid" id="formAgregarEspecialidad">
+            <label class="text-white font-medium" for="nombre">Nombre:</label>
+            <input class="rounded-md w-96 h-8 p-1" type="text" id="nombre" name="nombre" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarEspecialidad()">Agregar Especialidad</button>
+        </form>
+
+    </div>
+
+
+    <div class="p-5 flex space-x-14">
+
+        <div class="space-y-5">
+
+            <h1 class="font-medium text-xl">Especialidades registradas</h1>
+            <div class="italic" id="listaEspecialidades"></div>
+
+            <div>
+                <button id="btneliminarespecialidad4" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar4()">Eliminar especialidad</button>
+            </div>
+
+        </div>
+
+        <div id="contenidoDiv4" class="duration-150 hidden space-y-6">
+
+            <h1 class="font-medium text-xl">Eliminar especialidad</h1>
+
+            <div class="bg-[#730027] p-5 px-8 rounded-md">
+
+                <form class="grid" id="formBorrarEspecialidad">
+                    <label class="text-white font-medium"  for="nombreBorrar">Nombre de la especialidad a borrar:</label>
+                    <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreBorrar" name="nombre" required><br><br>
+                    <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarEspecialidad()">Borrar Especialidad</button>
+                </form>
+            
+                <div class="text-white font-medium mt-2" id="mensaje"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    
+    
+    
     
     <script>
         function agregarEspecialidad() {
@@ -72,5 +109,16 @@
             xhr.send();
         }
     </script>
+
+
+    <script>
+        function MEliminar4() {
+        var div = document.getElementById("contenidoDiv4");
+        div.classList.toggle("hidden");
+        var div = document.getElementById("btneliminarespecialidad4");
+        div.classList.toggle("hidden");
+        }
+    </script>
+
 </body>
 </html>
