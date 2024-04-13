@@ -12,7 +12,7 @@
 
     <div class="bg-[#730027] grid justify-center items-center -space-y-72">
         <h1 class="text-white text-3xl font-medium">Registro de Usuario</h1>
-        <form class="grid" action="/registro" method="POST">
+        <form class="grid" action="/registro" method="POST" id="formRegistro">
             <div class="space-y-6">
 
                 <div class="grid">
@@ -26,21 +26,14 @@
                 </div>
                 
             </div>
-            <button  class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="submit">Registrar</button>
+            <button  class="bg-white text-[#730027] p-1 rounded-md font-medium duration-150 hover:scale-105 w-80" type="button" onclick="registrarUsuario()">Registrar</button>
         </form>
  
     </div>
 
-
-
-
-
-
-
-
     <div class="p-12 flex space-x-14">
 
-         <div class="space-y-5">
+        <div class="space-y-5">
 
             <h1 class="font-medium text-2xl">Usuarios registrados</h1>
             <div class="italic" id="listaUsuarios"></div>
@@ -50,9 +43,6 @@
             </div>
 
         </div>
-
-
-
 
         <div id="contenidoDiv" class="duration-150 hidden space-y-6">
             <h1 class="font-medium text-2xl">Eliminar usuario</h1>
@@ -65,26 +55,50 @@
                 </form>
                 <div class="text-white font-medium mt-2" id="mensaje"></div>
             </div>
-
         </div>
-
     </div>
-
-
-
-
-   
 
     <script>
         function mostrarUsuarios() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/mostrar-usuarios", true); // Ruta para obtener los usuarios desde el backend
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                var usuarios = JSON.parse(xhr.responseText);
+                var listaUsuarios = '';
+                usuarios.forEach(usuario => {
+                    listaUsuarios += `<div>${usuario}</div>`;
+                });
+                document.getElementById("listaUsuarios").innerHTML = listaUsuarios;
+            } else {
+                console.error('Error al obtener los usuarios:', xhr.status);
+                // Manejar el error de alguna manera apropiada, por ejemplo, mostrar un mensaje al usuario
+            }
+        }
+    };
+    xhr.send();
+}
+
+        function registrarUsuario() {
+            var usuario = document.getElementById("usuario").value;
+            var contraseña = document.getElementById("contraseña").value;
+            if (!usuario.trim() || !contraseña.trim()) {
+                alert("Por favor, ingresa tanto el usuario como la contraseña.");
+                return;
+            }
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/mostrar-usuarios", true); // Ruta para obtener los usuarios desde el backend
+            var formData = new FormData(document.getElementById("formRegistro"));
+            xhr.open("POST", "/registrar-usuario", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("listaUsuarios").innerHTML = xhr.responseText;
+                    alert(xhr.responseText);
+                    mostrarUsuarios(); // Actualiza la lista de usuarios después de registrar uno
+                    document.getElementById("usuario").value = ""; // Limpia el campo de usuario
+                    document.getElementById("contraseña").value = ""; // Limpia el campo de contraseña
                 }
             };
-            xhr.send();
+            xhr.send(formData);
         }
 
         function borrarUsuario() {
@@ -94,7 +108,7 @@
                 return;
             }
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/usuarios/borrar", true);
+            xhr.open("POST", "/borrar-usuario", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -105,17 +119,14 @@
             };
             xhr.send("nombre=" + nombre);
         }
+
+        function MEliminar() {
+            var div = document.getElementById("contenidoDiv");
+            div.classList.toggle("hidden");
+            var div = document.getElementById("btneliminarusuario");
+            div.classList.toggle("hidden");
+        }
     </script>
-
-
-<script>
-    function MEliminar() {
-      var div = document.getElementById("contenidoDiv");
-      div.classList.toggle("hidden");
-      var div = document.getElementById("btneliminarusuario");
-      div.classList.toggle("hidden");
-    }
-  </script>
 
 </body>
 </html>

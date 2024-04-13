@@ -10,13 +10,14 @@
 <body class="grid grid-cols-2 h-screen" onload="mostrarMaterias()">
 
     <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
-       
+
         <h1 class="text-white font-medium text-3xl">Registro de Materias</h1>
         <form class="grid" id="formAgregarMateria">
             <label class="text-white font-medium" for="nombreMateria">Nombre de la materia:</label>
             <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreMateria" name="nombreMateria" required><br><br>
             <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarMateria()">Agregar Materia</button>
         </form>
+
     </div>
 
 
@@ -24,16 +25,17 @@
 
         <div class="space-y-5">
 
-            <h1 class="font-medium text-2xl">Maestros registrados</h1>
-            <div class="italic" id="listaMaterias"></div>
+            <h1 class="font-medium text-2xl">Materias registradas</h1>
+            <ul class="italic" id="listaMaterias"></ul>
 
             <div>
-                <button id="btneliminarusuario3" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar3()">Eliminar materia</button>
+                <button id="btnEliminarMateria" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="toggleEliminarMateria()">Eliminar materia</button>
             </div>
 
         </div>
 
-        <div id="contenidoDiv3" class="duration-150 hidden space-y-6">
+
+        <div id="contenidoDivEliminarMateria" class="duration-150 hidden space-y-6">
 
             <h1 class="font-medium text-2xl">Eliminar materia</h1>
 
@@ -49,11 +51,9 @@
             </div>
 
         </div>
-
     </div>
-
     
-
+   
     
     
     
@@ -84,16 +84,19 @@
                 return;
             }
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/materias/borrar", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.open("DELETE", "/borrar-materia/" + encodeURIComponent(nombre), true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("mensaje").innerHTML = xhr.responseText;
-                    mostrarMaterias(); // Actualiza la lista de materias después de borrar una
-                    document.getElementById("nombreMateriaBorrar").value = ""; // Limpia el campo de entrada
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        document.getElementById("mensaje").innerHTML = "Materia borrada exitosamente.";
+                        mostrarMaterias(); // Actualiza la lista de materias después de borrar una
+                        document.getElementById("nombreMateriaBorrar").value = ""; // Limpia el campo de entrada
+                    } else {
+                        document.getElementById("mensaje").innerHTML = "Error al borrar la materia.";
+                    }
                 }
             };
-            xhr.send("nombre=" + nombre);
+            xhr.send();
         }
 
         function mostrarMaterias() {
@@ -101,7 +104,12 @@
             xhr.open("GET", "/mostrar-materias", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("listaMaterias").innerHTML = xhr.responseText;
+                    var materias = JSON.parse(xhr.responseText);
+                    var listaMaterias = '';
+                    materias.forEach(materia => {
+                        listaMaterias += `<li>${materia}</li>`;
+                    });
+                    document.getElementById("listaMaterias").innerHTML = listaMaterias;
                 }
             };
             xhr.send();
@@ -109,10 +117,10 @@
     </script>
 
     <script>
-    function MEliminar3() {
-      var div = document.getElementById("contenidoDiv3");
+    function toggleEliminarMateria() {
+      var div = document.getElementById("contenidoDivEliminarMateria");
       div.classList.toggle("hidden");
-      var div = document.getElementById("btneliminarusuario3");
+      var div = document.getElementById("btnEliminarMateria");
       div.classList.toggle("hidden");
     }
   </script>

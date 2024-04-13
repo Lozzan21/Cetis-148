@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Buscar PDF</title>
 </head>
 <body>
     <h1>Bienvenido a la página principal</h1>
@@ -16,32 +16,38 @@
         <li><a href="/oficio">Crear Oficios</a></li>
         <li><a href="/asunto">Asuntos</a></li>
     </ul>
-    <h2>PDFs en la base de datos</h2>
-    <ul id="pdfList"></ul>
-    <button onclick="obtenerPDFs()">Mostrar PDFs</button>
-    
-    <script>
-        function obtenerPDFs() {
-            // Realizar una solicitud para obtener los PDFs de la base de datos
-            fetch('/obtener-pdfs')
-                .then(response => response.json())
-                .then(data => {
-                    // Limpiar la lista de PDFs antes de agregar los nuevos
-                    const pdfList = document.getElementById('pdfList');
-                    pdfList.innerHTML = '';
+    <h1>Buscar PDF</h1>
+    <form action="/search-pdf" method="GET">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha"><br>
 
-                    // Mostrar cada PDF en la lista
-                    data.forEach(pdf => {
-                        const pdfItem = document.createElement('li');
-                        const pdfLink = document.createElement('a');
-                        pdfLink.href = `data:application/pdf;base64,${pdf.pdfContent}`;
-                        pdfLink.textContent = `PDF ${pdf.id}`;
-                        pdfItem.appendChild(pdfLink);
-                        pdfList.appendChild(pdfItem);
-                    });
-                })
-                .catch(error => console.error('Error al obtener los PDFs:', error));
-        }
-    </script>
+        <label for="asunto">Asunto:</label>
+        <input type="text" id="asunto" name="asunto"><br>
+
+        <label for="maestro">Maestro:</label>
+        <input type="text" id="maestro" name="maestro"><br>
+
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (pdfs && pdfs.length > 0) { %>
+        <h2>Resultados:</h2>
+        <ul>
+            <% pdfs.forEach(pdf => { %>
+                <li>
+                    <h3>Asunto: <%= pdf.asunto %></h3>
+                    <p>Maestro: <%= pdf.maestro %></p>
+                    <p>Especialidad: <%= pdf.especialidad %></p>
+                    <p>Materia: <%= pdf.materia %></p>
+                    <p>Grupo: <%= pdf.grupo %></p>
+                    <p>Fecha: <%= pdf.fecha %></p>
+                    <a href="/download-pdf/<%= pdf.id %>">Descargar PDF</a>
+                    <!-- Agrega más detalles del PDF si lo deseas -->
+                </li>
+            <% }); %>
+        </ul>
+    <% } else if (pdfs && pdfs.length === 0) { %>
+        <p>No se encontraron PDFs con los filtros seleccionados.</p>
+    <% } %>
 </body>
 </html>

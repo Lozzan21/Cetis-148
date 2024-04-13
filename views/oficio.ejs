@@ -1,188 +1,176 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generar PDF</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        #pdfPreview {
-            width: 100%; /* Ajustar el ancho según tus necesidades */
-            height: 500px; /* Ajustar la altura según tus necesidades */
-            border: 1px solid #ccc; /* Borde opcional */
-            margin-top: 20px; /* Margen superior opcional */
-        }
-    </style>
+    <title>Oficio</title>
 </head>
 <body>
-    <h1>Generar PDF</h1>
-    <form id="pdfForm" action="/generar-y-guardar-pdf" method="post" target="pdfFrame">
-        
-        <div class="select-container">
-            <label for="asunto">Asunto:</label>
-            <select id="asunto" name="asunto" required>
-                <!-- Opciones de maestros se agregarán aquí -->
-            </select>
-            <button type="button" onclick="agregarTexto('asunto')">Agregar</button>
-            </div>
+    <h1>Generar Oficio</h1>
+    <form action="/generate-pdf" method="POST">
+        <label for="asunto">Asunto:</label>
+        <select id="asunto" name="asunto" required>
+            <!-- Las opciones se agregarán aquí mediante JavaScript -->
+        </select><br>
+        <button type="button" onclick="agregarTexto('asunto')">Agregar</button><br>
 
-        <div class="select-container">
-        <label for="maestro">Maestro:</label>
+
+        <!-- Dropdown para seleccionar maestro -->
+        <label for="maestro">Seleccionar Maestro:</label>
         <select id="maestro" name="maestro" required>
-            <!-- Opciones de maestros se agregarán aquí -->
-        </select>
-        <button type="button" onclick="agregarTexto('maestro')">Agregar</button>
-        </div>
+            <!-- Las opciones se agregarán aquí mediante JavaScript -->
+        </select><br>
+        <button type="button" onclick="agregarTexto('maestro')">Agregar</button><br>
 
-        <div class="select-container">
-        <label for="materia">Materia:</label>
-        <select id="materia" name="materia" required>
-            <!-- Opciones de materias se agregarán aquí -->
-        </select>
-        <button type="button" onclick="agregarTexto('materia')">Agregar</button>
-        </div>
 
-        <div class="select-container">
-        <label for="especialidad">Especialidad:</label>
+        <!-- Dropdown para seleccionar especialidad -->
+        <label for="especialidad">Seleccionar Especialidad:</label>
         <select id="especialidad" name="especialidad" required>
-            <!-- Opciones de especialidades se agregarán aquí -->
-        </select>
-        <button type="button" onclick="agregarTexto('especialidad')">Agregar</button>
-        </div>
+            <!-- Las opciones se agregarán aquí mediante JavaScript -->
+        </select><br>
+        <button type="button" onclick="agregarTexto('especialidad')">Agregar</button><br>
 
-        <div class="select-container">
-        <label for="grupo">Grupo:</label>
+        <!-- Dropdown para seleccionar materia -->
+        <label for="materia">Seleccionar Materia:</label>
+        <select id="materia" name="materia" required>
+            <!-- Las opciones se agregarán aquí mediante JavaScript -->
+        </select><br>
+        <button type="button" onclick="agregarTexto('materia')">Agregar</button><br>
+
+
+        <!-- Dropdown para seleccionar grupo -->
+        <label for="grupo">Seleccionar Grupo:</label>
         <select id="grupo" name="grupo" required>
-            <!-- Opciones de grupos se agregarán aquí -->
-        </select>
-        <button type="button" onclick="agregarTexto('grupo')">Agregar</button>
-        </div>
+            <!-- Las opciones se agregarán aquí mediante JavaScript -->
+        </select><br>
+        <button type="button" onclick="agregarTexto('grupo')">Agregar</button><br>
 
-        <div class="select-container">
-        <label for="fecha" class="bold-label">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required><br><br>
-        <button type="button" onclick="agregarTexto('fecha')">Agregar</button>
-         </div>
 
-         <div class="select-container">
-            <label for="texto" class="bold-label"></label>
-            <textarea id="texto" name="texto" required rows="4" cols="50"></textarea>
-        </div>
-        
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required><br>
+        <button type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
+
+
+        <label for="texto">Texto:</label>
+        <input type="text" id="texto" name="texto" required><br>
 
         <div class="checkbox-container">
-            <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox">
+            <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox" onchange="redireccionar()">
             <label for="agregarTablaCheckbox">Avanzados</label>
         </div>
 
-        <button type="button" onclick="generarPDF()">Vista Previa</button>
+        <button type="submit">Generar PDF</button>
+    </form>
 
-        <input type="hidden" id="pdfContent" name="pdfContent">
-        <button type="submit">Generar y Guardar PDF</button>
-        
-        <iframe id="pdfPreview" name="pdfFrame" frameborder="0"></iframe>
-
-    <script> 
-        $(document).ready(function() {
-            // Hacer una solicitud AJAX para obtener los maestros
-            $.get('/obtener-asuntos', function(data) {
-                // Agregar cada maestro como una opción en el menú desplegable
-                data.forEach(function(asunto) {
-                    $('#asunto').append($('<option>', {
-                        value: asunto.nombre,
-                        text: asunto.nombre
-                    }));
-                });
-            });
-
-        $(document).ready(function() {
-            // Hacer una solicitud AJAX para obtener los maestros
-            $.get('/obtener-maestros', function(data) {
-                // Agregar cada maestro como una opción en el menú desplegable
-                data.forEach(function(maestro) {
-                    $('#maestro').append($('<option>', {
-                        value: maestro.nombre,
-                        text: maestro.nombre
-                    }));
-                });
-            });
-
-            // Hacer una solicitud AJAX para obtener las materias
-            $.get('/obtener-materias', function(data) {
-                // Agregar cada materia como una opción en el menú desplegable
-                data.forEach(function(materia) {
-                    $('#materia').append($('<option>', {
-                        value: materia.nombre,
-                        text: materia.nombre
-                    }));
-                });
-            });
-
-            // Hacer una solicitud AJAX para obtener las especialidades
-            $.get('/obtener-especialidades', function(data) {
-                // Agregar cada especialidad como una opción en el menú desplegable
-                data.forEach(function(especialidad) {
-                    $('#especialidad').append($('<option>', {
-                        value: especialidad.nombre,
-                        text: especialidad.nombre
-                    }));
-                });
-            });
-
-            // Hacer una solicitud AJAX para obtener los grupos
-            $.get('/obtener-grupos', function(data) {
-                // Agregar cada grupo como una opción en el menú desplegable
-                data.forEach(function(grupo) {
-                    $('#grupo').append($('<option>', {
-                        value: grupo.nombre,
-                        text: grupo.nombre
-                    }));
-                });
-            });
-        });
-    });
-    </script>
     <script>
-        $(document).ready(function() {
-            // Hacer una solicitud AJAX para obtener los maestros, materias, especialidades y grupos...
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+            var selectAsunto = document.getElementById('asunto');
+            var selectMaestro = document.getElementById('maestro');
+            var selectEspecialidad = document.getElementById('especialidad');
+            var selectMateria = document.getElementById('materia');
+            var selectGrupo = document.getElementById('grupo');
 
-        // Función para agregar el valor seleccionado al campo de texto
-        function agregarTexto(selectId) {
-            var selectValue = $('#' + selectId).val();
-            var textoActual = $('#texto').val();
-            if (textoActual !== '') {
-                textoActual += ', ';
-            }
-            $('#texto').val(textoActual + selectValue);
-        }
-    </script>
-<script>
-    $(document).ready(function() {
-        // Manejar el cambio en el estado del checkbox
-        $('#agregarTablaCheckbox').change(function() {
-            if ($(this).is(':checked')) {
-                // Redireccionar a la vista oficios.ejs si el checkbox está seleccionado
-                window.location.href = '/oficios';
-            }
+            // Obtener lista de asuntos mediante AJAX
+            var xhrAsuntos = new XMLHttpRequest();
+            xhrAsuntos.open('GET', '/asuntos', true);
+            xhrAsuntos.onload = function () {
+                if (xhrAsuntos.status === 200) {
+                    var asuntos = JSON.parse(xhrAsuntos.responseText);
+                    asuntos.forEach(function (asunto) {
+                        var option = document.createElement('option');
+                        option.value = asunto.nombre;
+                        option.textContent = asunto.nombre;
+                        selectAsunto.appendChild(option);
+                    });
+                }
+            };
+            xhrAsuntos.send();
+
+            // Obtener lista de maestros mediante AJAX
+            var xhrMaestros = new XMLHttpRequest();
+            xhrMaestros.open('GET', '/maestro', true);
+            xhrMaestros.onload = function () {
+                if (xhrMaestros.status === 200) {
+                    var maestros = JSON.parse(xhrMaestros.responseText);
+                    maestros.forEach(function (maestro) {
+                        var option = document.createElement('option');
+                        option.value = maestro.nombre;
+                        option.textContent = maestro.nombre;
+                        selectMaestro.appendChild(option);
+                    });
+                }
+            };
+            xhrMaestros.send();
+
+            // Obtener lista de especialidades mediante AJAX
+            var xhrEspecialidades = new XMLHttpRequest();
+            xhrEspecialidades.open('GET', '/especialidades', true);
+            xhrEspecialidades.onload = function () {
+                if (xhrEspecialidades.status === 200) {
+                    var especialidades = JSON.parse(xhrEspecialidades.responseText);
+                    especialidades.forEach(function (especialidad) {
+                        var option = document.createElement('option');
+                        option.value = especialidad.nombre;
+                        option.textContent = especialidad.nombre;
+                        selectEspecialidad.appendChild(option);
+                    });
+                }
+            };
+            xhrEspecialidades.send();
+
+            // Obtener lista de materias mediante AJAX
+            var xhrMaterias = new XMLHttpRequest();
+            xhrMaterias.open('GET', '/materia', true);
+            xhrMaterias.onload = function () {
+                if (xhrMaterias.status === 200) {
+                    var materias = JSON.parse(xhrMaterias.responseText);
+                    materias.forEach(function (materia) {
+                        var option = document.createElement('option');
+                        option.value = materia.nombre;
+                        option.textContent = materia.nombre;
+                        selectMateria.appendChild(option);
+                    });
+                }
+            };
+            xhrMaterias.send();
+
+            // Obtener lista de grupos mediante AJAX
+            var xhrGrupos = new XMLHttpRequest();
+            xhrGrupos.open('GET', '/grupo', true);
+            xhrGrupos.onload = function () {
+                if (xhrGrupos.status === 200) {
+                    var grupos = JSON.parse(xhrGrupos.responseText);
+                    grupos.forEach(function (grupo) {
+                        var option = document.createElement('option');
+                        option.value = grupo.nombre;
+                        option.textContent = grupo.nombre;
+                        selectGrupo.appendChild(option);
+                    });
+                }
+            };
+            xhrGrupos.send();
         });
-    });
-</script>
-<script>
-    function generarPDF() {
-        // Obtener el contenido del PDF desde el iframe
-        var pdfContent = document.getElementById('pdfPreview').contentWindow.document.body.innerHTML;
+    </script>
+        <script>
+            // Función para agregar texto a la caja de texto
+            function agregarTexto(id) {
+                var input = document.getElementById(id);
+                var textoActual = document.getElementById('texto').value;
+                var textoNuevo = input.value;
     
-        // Establecer el contenido del PDF en un campo oculto del formulario
-        document.getElementById('pdfContent').value = pdfContent;
+                // Agrega el texto nuevo al texto actual con un espacio
+                textoActual += ' ' + textoNuevo;
     
-        // Enviar el formulario para generar y guardar el PDF
-        document.getElementById('pdfForm').submit();
+                // Actualiza el valor de la caja de texto
+                document.getElementById('texto').value = textoActual;
+            }
+        </script>
+        <script>
+            function redireccionar() {
+    if (document.getElementById('agregarTablaCheckbox').checked) {
+        window.location.href = '/oficios'; // Reemplaza '/otra-vista' con la ruta de tu vista
     }
-    </script>
-
-
+}
+        </script>
 </body>
 </html>

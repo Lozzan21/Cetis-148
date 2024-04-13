@@ -26,7 +26,7 @@
         <div class="space-y-5">
 
             <h1 class="font-medium text-2xl">Asuntos registrados</h1>
-            <div class="italic" id="listaAsuntos"></div>
+            <ul class="italic" id="listaAsuntos"></ul>
 
             <div>
                 <button id="btneliminarasunto" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar6()">Eliminar asunto</button>
@@ -65,7 +65,7 @@
                 return;
             }
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/asuntos/agregar", true);
+            xhr.open("POST", "/agregar-asunto", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -84,16 +84,19 @@
                 return;
             }
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/asuntos/borrar", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.open("DELETE", "/borrar-asunto/" + encodeURIComponent(nombre), true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("mensaje").innerHTML = xhr.responseText;
-                    mostrarAsuntos(); // Actualiza la lista de asuntos después de borrar uno
-                    document.getElementById("nombreAsuntoBorrar").value = ""; // Limpia el campo de entrada
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        document.getElementById("mensaje").innerHTML = "Asunto borrado exitosamente.";
+                        mostrarAsuntos(); // Actualiza la lista de asuntos después de borrar uno
+                        document.getElementById("nombreAsuntoBorrar").value = ""; // Limpia el campo de entrada
+                    } else {
+                        document.getElementById("mensaje").innerHTML = "Error al borrar el asunto.";
+                    }
                 }
             };
-            xhr.send("nombre=" + nombre);
+            xhr.send();
         }
 
         function mostrarAsuntos() {
@@ -101,7 +104,12 @@
             xhr.open("GET", "/mostrar-asuntos", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("listaAsuntos").innerHTML = xhr.responseText;
+                    var asuntos = JSON.parse(xhr.responseText);
+                    var listaAsuntos = '';
+                    asuntos.forEach(asunto => {
+                        listaAsuntos += `<li>${asunto}</li>`;
+                    });
+                    document.getElementById("listaAsuntos").innerHTML = listaAsuntos;
                 }
             };
             xhr.send();

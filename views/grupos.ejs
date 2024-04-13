@@ -26,15 +26,16 @@
         <div class="space-y-5">
 
             <h1 class="font-medium text-2xl">Grupos registrados</h1>
-            <div class="italic" id="listaGrupos"></div>
+            <ul class="italic" id="listaGrupos"></ul>
 
             <div>
-                <button id="btneliminargrupo" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="MEliminar5()">Eliminar grupo</button>
+                <button id="btnEliminarGrupo" class="bg-[#730027] p-1 px-6 rounded-md text-white font-medium duration-150 hover:scale-105" onclick="toggleEliminarGrupo()">Eliminar grupo</button>
             </div>
 
         </div>
 
-        <div id="contenidoDiv5" class="duration-150 hidden space-y-6">
+
+        <div id="contenidoDivEliminarGrupo" class="duration-150 hidden space-y-6">
 
             <h1 class="font-medium text-2xl">Eliminar grupo</h1>
 
@@ -45,16 +46,14 @@
                     <input class="mt-2 p-1 border border-gray-400 rounded-md w-60 hover:border-gray-900" type="text" id="nombreGrupoBorrar" name="nombreGrupoBorrar" required><br><br>
                     <button class="bg-white p-1 px-4 rounded-md font-medium duration-150 hover:scale-105" type="button" onclick="borrarGrupo()">Borrar Grupo</button>
                 </form>
-                
                 <div class="text-white font-medium mt-2" id="mensaje"></div>
 
             </div>
 
         </div>
-
     </div>
     
-    
+   
     
     
     
@@ -85,16 +84,19 @@
                 return;
             }
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/grupos/borrar", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.open("DELETE", "/borrar-grupo/" + encodeURIComponent(nombre), true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("mensaje").innerHTML = xhr.responseText;
-                    mostrarGrupos(); // Actualiza la lista de grupos después de borrar uno
-                    document.getElementById("nombreGrupoBorrar").value = ""; // Limpia el campo de entrada
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        document.getElementById("mensaje").innerHTML = "Grupo borrado exitosamente.";
+                        mostrarGrupos(); // Actualiza la lista de grupos después de borrar uno
+                        document.getElementById("nombreGrupoBorrar").value = ""; // Limpia el campo de entrada
+                    } else {
+                        document.getElementById("mensaje").innerHTML = "Error al borrar el grupo.";
+                    }
                 }
             };
-            xhr.send("nombre=" + nombre);
+            xhr.send();
         }
 
         function mostrarGrupos() {
@@ -102,7 +104,12 @@
             xhr.open("GET", "/mostrar-grupos", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("listaGrupos").innerHTML = xhr.responseText;
+                    var grupos = JSON.parse(xhr.responseText);
+                    var listaGrupos = '';
+                    grupos.forEach(grupo => {
+                        listaGrupos += `<li>${grupo}</li>`;
+                    });
+                    document.getElementById("listaGrupos").innerHTML = listaGrupos;
                 }
             };
             xhr.send();
@@ -110,10 +117,10 @@
     </script>
 
     <script>
-    function MEliminar5() {
-      var div = document.getElementById("contenidoDiv5");
+    function toggleEliminarGrupo() {
+      var div = document.getElementById("contenidoDivEliminarGrupo");
       div.classList.toggle("hidden");
-      var div = document.getElementById("btneliminargrupo");
+      var div = document.getElementById("btnEliminarGrupo");
       div.classList.toggle("hidden");
     }
   </script>

@@ -62,50 +62,60 @@
     
     
     <script>
+        
         function agregarMaestro() {
-            var nombre = document.getElementById("nombreMaestro").value;
-            if (!nombre.trim()) {
-                alert("Por favor, ingresa el nombre del maestro.");
-                return;
-            }
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/maestros/agregar", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("mensaje").innerHTML = xhr.responseText;
-                    mostrarMaestros(); // Actualiza la lista de maestros después de agregar uno
-                    document.getElementById("nombreMaestro").value = ""; // Limpia el campo de entrada
-                }
-            };
-            xhr.send("nombre=" + nombre);
+    var nombre = document.getElementById("nombreMaestro").value;
+    if (!nombre.trim()) {
+        alert("Por favor, ingresa el nombre del maestro.");
+        return;
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/agregar-maestro", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById("mensaje").innerHTML = xhr.responseText;
+            mostrarMaestros(); // Actualiza la lista de maestros después de agregar uno
+            document.getElementById("nombreMaestro").value = ""; // Limpia el campo de entrada
         }
+    };
+    xhr.send("nombre=" + nombre);
+}
 
-        function borrarMaestro() {
-            var nombre = document.getElementById("nombreMaestroBorrar").value;
-            if (!nombre.trim()) {
-                alert("Por favor, ingresa el nombre del maestro a borrar.");
-                return;
+function borrarMaestro() {
+    var nombre = document.getElementById("nombreMaestroBorrar").value;
+    if (!nombre.trim()) {
+        alert("Por favor, ingresa el nombre del maestro a borrar.");
+        return;
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", "/borrar-maestro/" + encodeURIComponent(nombre), true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                document.getElementById("mensaje").innerHTML = "Maestro borrado exitosamente.";
+                mostrarMaestros(); // Actualiza la lista de maestros después de borrar uno
+            } else {
+                document.getElementById("mensaje").innerHTML = "Error al borrar el maestro.";
             }
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/maestros/borrar", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("mensaje").innerHTML = xhr.responseText;
-                    mostrarMaestros(); // Actualiza la lista de maestros después de borrar uno
-                    document.getElementById("nombreMaestroBorrar").value = ""; // Limpia el campo de entrada
-                }
-            };
-            xhr.send("nombre=" + nombre);
         }
+    };
+    xhr.send();
+}
 
         function mostrarMaestros() {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/mostrar-maestros", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("listaMaestros").innerHTML = xhr.responseText;
+                    var maestros = JSON.parse(xhr.responseText);
+                    var listaMaestros = '<h2></h2><ul>';
+                    maestros.forEach(maestro => {
+                        listaMaestros += `<li>${maestro.nombre}</li>`;
+                    });
+                    listaMaestros += '</ul>';
+                    document.getElementById("listaMaestros").innerHTML = listaMaestros;
                 }
             };
             xhr.send();
