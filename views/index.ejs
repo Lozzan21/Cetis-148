@@ -3,51 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar PDF</title>
+    <title>Inicio</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Bienvenido a la página principal</h1>
-    <h2>¿Qué deseas hacer?</h2>
-    <ul>
-        <li><a href="/maestros">Registrar Maestros</a></li>
-        <li><a href="/materias">Registrar Materias</a></li>
-        <li><a href="/especialidad">Registrar Especialidades</a></li>
-        <li><a href="/grupos">Registrar Grupos</a></li>
-        <li><a href="/oficio">Crear Oficios</a></li>
-        <li><a href="/asunto">Asuntos</a></li>
-    </ul>
-    <h1>Buscar PDF</h1>
-    <form action="/search-pdf" method="GET">
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha"><br>
+    <div class="bg-[#730027] h-16 flex items-center justify-between">
 
-        <label for="asunto">Asunto:</label>
-        <input type="text" id="asunto" name="asunto"><br>
+        <img class="h-14 w-12 duration-150 hover:scale-110 ml-2" src="/img/logo2.png" alt="logo">
 
-        <label for="maestro">Maestro:</label>
-        <input type="text" id="maestro" name="maestro"><br>
+        <div class="text-white font-medium">
+            <a class="mr-4 duration-150 hover:bg-white hover:text-[#730027] p-1 rounded-lg" href="/maestros">Maestros</a>
+            <a class="mr-4 duration-150 hover:bg-white hover:text-[#730027] p-1 rounded-lg" href="/materias">Materias</a>
+            <a class="mr-4 duration-150 hover:bg-white hover:text-[#730027] p-1 rounded-lg" href="/especialidad">Especialidades</a>
+            <a class="mr-4 duration-150 hover:bg-white hover:text-[#730027] p-1 rounded-lg" href="/grupos">Grupos</a>
+            <a class="mr-4 duration-150 hover:bg-white hover:text-[#730027] p-1 rounded-lg" href="/asunto">Asuntos</a>
+            
+        </div>
+       
+           
+            
+    </div>
 
-        <button type="submit">Buscar</button>
-    </form>
+    <div class="grid grid-cols-2 h-screen">
 
-    <% if (pdfs && pdfs.length > 0) { %>
-        <h2>Resultados:</h2>
-        <ul>
-            <% pdfs.forEach(pdf => { %>
-                <li>
-                    <h3>Asunto: <%= pdf.asunto %></h3>
-                    <p>Maestro: <%= pdf.maestro %></p>
-                    <p>Especialidad: <%= pdf.especialidad %></p>
-                    <p>Materia: <%= pdf.materia %></p>
-                    <p>Grupo: <%= pdf.grupo %></p>
-                    <p>Fecha: <%= pdf.fecha %></p>
-                    <a href="/download-pdf/<%= pdf.id %>">Descargar PDF</a>
-                    <!-- Agrega más detalles del PDF si lo deseas -->
-                </li>
-            <% }); %>
-        </ul>
-    <% } else if (pdfs && pdfs.length === 0) { %>
-        <p>No se encontraron PDFs con los filtros seleccionados.</p>
-    <% } %>
+        <div class="bg-gray-100 p-4">
+
+            <h1 class="font-medium text-3xl mb-10">Bienvenido a la página principal</h1>
+            <a class="grid place-items-center mr-4 duration-150 font-medium text-white bg-[#730027] hover:bg-white hover:text-[#730027] p-1 pr-3 pl-3 rounded-lg" href="/oficio">CREAR OFICIO</a>
+            
+            <div class="mt-10 grid space-y-6 place-items-center">
+
+                <h1 class="font-medium text-2xl">Buscar oficio</h1>
+
+                <form class="space-y-6 grid place-items-center" action="/search-pdf" method="GET">
+                    <div>
+                        <label class="font-medium" for="fecha">Fecha:</label>
+                        <input class="p-1 border w-48 border-gray-300 rounded-lg" type="date" id="fecha" name="fecha"><br>
+                    </div>
+                    <div>
+                        <label class="font-medium" for="asunto">Asunto:</label>
+                        <input class="p-1 border border-gray-300 rounded-lg" type="text" id="asunto" name="asunto"><br>
+                    </div>
+                    <div>
+                        <label class="font-medium" for="maestro">Maestro:</label>
+                        <input class="p-1 border border-gray-300 rounded-lg" type="text" id="maestro" name="maestro"><br>
+                    </div>
+                    
+                    <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400"  type="submit">Buscar</button>
+                </form>
+
+            </div>
+            
+
+            
+
+        </div>
+
+
+        <div class="p-6">
+
+            <% if (pdfs && pdfs.length > 0) { %>
+                <h2 class="font-medium text-2xl">Resultados</h2><br>
+                <ul>
+                    <% pdfs.forEach(pdf => { %>
+                        <li>
+                            <div class="flex space-x-2">
+                                <h3 class="font-medium">Asunto:</h3>
+                                <h3><%= pdf.asunto %></h3>
+                            </div>
+
+                            <div class="flex space-x-2">
+                                <p class="font-medium">Maestro:</p>
+                                <p><%= pdf.maestro %></p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <p class="font-medium">Especialidad:</p>
+                                <p><%= pdf.especialidad %></p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <p class="font-medium">Materia:</p>
+                                <p><%= pdf.materia %></p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <p class="font-medium">Grupo:</p>
+                                <p><%= pdf.grupo %></p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <p class="font-medium">Fecha:</p>
+                                <p><%= pdf.fecha %></p>
+                            </div><br>
+                            
+                            <a class="bg-[#730027] text-white p-1 pr-4 pl-4 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" href="/download-pdf/<%= pdf.id %>">Descargar PDF</a><br><br>
+                            <!-- Agrega más detalles del PDF si lo deseas -->
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else if (pdfs && pdfs.length === 0) { %>
+                <p>No se encontraron PDFs con los filtros seleccionados.</p>
+            <% } %>
+
+        </div>
+
+    </div>
+    
+    
 </body>
 </html>

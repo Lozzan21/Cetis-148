@@ -3,64 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oficio</title>
+    <title>Generar oficio</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Generar Oficio</h1>
-    <form action="/generate-pdf" method="POST">
-        <label for="asunto">Asunto:</label>
-        <select id="asunto" name="asunto" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('asunto')">Agregar</button><br>
+<body class="space-y-5 p-10">
+
+            <h1 class="mb-10 font-medium text-2xl">GENERAR OFICIO</h1>
+            <form class="space-y-4" action="/generate-pdf" method="POST">
 
 
-        <!-- Dropdown para seleccionar maestro -->
-        <label for="maestro">Seleccionar Maestro:</label>
-        <select id="maestro" name="maestro" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('maestro')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="asunto">Asunto:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="asunto" name="asunto" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('asunto')">Agregar</button>
+                    </div>
+
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="maestro">Seleccionar Maestro:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="maestro" name="maestro" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('maestro')">Agregar</button><br>
+                    </div>
+                </div>
 
 
-        <!-- Dropdown para seleccionar especialidad -->
-        <label for="especialidad">Seleccionar Especialidad:</label>
-        <select id="especialidad" name="especialidad" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('especialidad')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="especialidad">Seleccionar Especialidad:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="especialidad" name="especialidad" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('especialidad')">Agregar</button><br>
+                    </div>
 
-        <!-- Dropdown para seleccionar materia -->
-        <label for="materia">Seleccionar Materia:</label>
-        <select id="materia" name="materia" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('materia')">Agregar</button><br>
-
-
-        <!-- Dropdown para seleccionar grupo -->
-        <label for="grupo">Seleccionar Grupo:</label>
-        <select id="grupo" name="grupo" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('grupo')">Agregar</button><br>
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="materia">Seleccionar Materia:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="materia" name="materia" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('materia')">Agregar</button><br>
+                    </div>
+                </div>
 
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required><br>
-        <button type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="grupo">Seleccionar Grupo:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="grupo" name="grupo" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('grupo')">Agregar</button><br>
+                    </div>
 
+                    <div class="flex space-x-4">
+                        <label class=" font-medium"  for="fecha">Fecha:</label>
+                        <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" type="date" id="fecha" name="fecha" required>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
+                    </div>
+                </div>
 
-        <label for="texto">Texto:</label>
-        <input type="text" id="texto" name="texto" required><br>
+                <div class="grid">
+                    <label class=" font-medium" for="texto">Texto:</label>
+                    <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-32 w-8/12" type="text" id="texto" name="texto" required>
+                </div>
+                
 
-        <div class="checkbox-container">
-            <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox" onchange="redireccionar()">
-            <label for="agregarTablaCheckbox">Avanzados</label>
-        </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox" onchange="redireccionar()">
+                    <label class="font-medium" for="agregarTablaCheckbox">Avanzados</label>
+                </div>
 
-        <button type="submit">Generar PDF</button>
-    </form>
+                <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="submit">Generar PDF</button>
+            </form>
+      
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
