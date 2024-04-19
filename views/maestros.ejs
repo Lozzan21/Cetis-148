@@ -7,18 +7,18 @@
     <link rel="icon" href="/img/icono.png"> 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="grid grid-cols-2 h-screen" onload="mostrarMaestros()">
+<body class="grid grid-cols-2" onload="mostrarMaestros()">
 
 
 
-    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
-        <a class="mr-4 duration-150 text-white font-medium hover:bg-white w-12 hover:text-[#730027] p-1 rounded-lg" href="/">Inicio</a>
+    <div class="p-5 bg-[#730027] grid justify-center items-start pt-44 -space-y-80">
+        <a class="mr-4 duration-150 text-white font-medium hover:bg-white w-16 hover:text-[#730027] p-1 rounded-lg" href="/">↢Inicio</a>
 
-        <h1 class="text-white font-medium text-3xl">Registro de Maestros</h1>
-        <form class="grid" id="formAgregarMaestro">
-            <label class="text-white font-medium" for="nombreMaestro">Nombre del maestro:</label>
-            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreMaestro" name="nombreMaestro" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required><br><br>
-            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarMaestro()">Agregar Maestro</button>
+        <h1 class="text-white font-medium text-3xl ">Registro de Maestros</h1>
+        <form class="grid -space-y-64" id="formAgregarMaestro">
+            <label class="text-white font-medium -mt-72" for="nombreMaestro">Nombre del maestro:</label>
+            <input class="rounded-md w-72 h-8 p-1 mt-7" type="text" id="nombreMaestro" name="nombreMaestro" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required><br><br>
+            <button class="bg-white text-[#730027] rounded-md h-8 p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarMaestro()">Agregar Maestro</button>
         </form>
 
     </div>

@@ -9,14 +9,14 @@
 </head>
 <body class="grid grid-cols-2 h-screen" onload="mostrarGrupos()">
 
-    <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
-        <a class="mr-4 duration-150 text-white font-medium hover:bg-white w-12 hover:text-[#730027] p-1 rounded-lg" href="/">Inicio</a>
+    <div class="p-5 bg-[#730027] grid justify-center items-start pt-44 -space-y-80">
+        <a class="mr-4 duration-150 text-white font-medium hover:bg-white w-16 hover:text-[#730027] p-1 rounded-lg" href="/">↢Inicio</a>
 
         <h1 class="text-white font-medium text-3xl">Registro de Grupos</h1>
-        <form class="grid" id="formAgregarGrupo">
-            <label class="text-white font-medium" for="nombreGrupo">Nombre del grupo:</label>
+        <form class="grid -space-y-64" id="formAgregarGrupo">
+            <label class="text-white font-medium -mt-72" for="nombreGrupo">Nombre del grupo:</label>
             <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreGrupo" name="nombreGrupo" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" required><br><br>
-            <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarGrupo()">Agregar Grupo</button>
+            <button class="bg-white text-[#730027] rounded-md p-1 h-8 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarGrupo()">Agregar Grupo</button>
         </form>
 
     </div>
