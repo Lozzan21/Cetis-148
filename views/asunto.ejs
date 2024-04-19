@@ -10,12 +10,11 @@
 <body class="grid grid-cols-2 h-screen" onload="mostrarAsuntos()">
 
     <div class="p-5 bg-[#730027] grid justify-center items-center -space-y-72">
-        <a class="mr-4 duration-150 text-white font-medium hover:bg-white w-12 hover:text-[#730027] p-1 rounded-lg" href="/">Inicio</a>
 
         <h1 class="text-white font-medium text-3xl">Registro de Asuntos</h1>
         <form class="grid" id="formAgregarAsunto">
             <label class="text-white font-medium" for="nombreAsunto">Nombre del asunto:</label>
-            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreAsunto" name="nombreAsunto" required><br><br>
+            <input class="rounded-md w-72 h-8 p-1" type="text" id="nombreAsunto" name="nombreAsunto" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required><br><br>
             <button class="bg-white text-[#730027] rounded-md p-1 duration-150 hover:scale-105 font-medium" type="button" onclick="agregarAsunto()">Agregar Asunto</button>
         </form>
 

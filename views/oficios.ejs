@@ -8,7 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="space-y-5 p-10">
-            <a class="mr-4 duration-150 font-medium hover:bg-[#730027] w-12 hover:text-white p-1 rounded-lg" href="/">Inicio</a>
 
             <h1 class="mb-10 font-medium text-2xl">GENERAR OFICIO</h1>
             <form action="/generar" method="post">
@@ -58,10 +57,6 @@
                     </div>
                 </div>
 
-                <div class="flex space-x-4 items-center">
-                    <label class="font-medium" for="numero">Número de oficio:</label>
-                    <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" type="text" id="numero" name="numero" required>
-                </div>
 
                 <div class="grid">
                     <label class=" font-medium" for="texto">Texto:</label>
@@ -192,21 +187,20 @@
         </script>
 
 
-    <script>
-        $(document).ready(function() {
-            // Hacer una solicitud AJAX para obtener los maestros, materias, especialidades y grupos...
-        });
+<script>
+    // Función para agregar texto a la caja de texto
+    function agregarTexto(id) {
+        var input = document.getElementById(id);
+        var textoActual = document.getElementById('texto').value;
+        var textoNuevo = input.value;
 
-        // Función para agregar el valor seleccionado al campo de texto
-        function agregarTexto(selectId) {
-            var selectValue = $('#' + selectId).val();
-            var textoActual = $('#texto').val();
-            if (textoActual !== '') {
-                textoActual += ', ';
-            }
-            $('#texto').val(textoActual + selectValue);
-        }
-    </script>
+        // Agrega el texto nuevo al texto actual con un espacio
+        textoActual += ' ' + textoNuevo;
+
+        // Actualiza el valor de la caja de texto
+        document.getElementById('texto').value = textoActual;
+    }
+</script>
 
 <script>
     // Función para mostrar u ocultar la tabla cuando se presiona el botón
@@ -217,6 +211,8 @@
 
     // Función para agregar campos de entrada de texto para los títulos de las columnas y el contenido de la tabla
     function agregarCampos() {
+    // Deshabilitar el botón después de hacer clic en él
+    document.getElementById('agregarContenidoBtn').disabled = true;
         const numRows = parseInt(document.getElementById('numRows').value);
         const numCols = parseInt(document.getElementById('numCols').value);
         const columnTitlesContainer = document.getElementById('columnTitlesContainer');

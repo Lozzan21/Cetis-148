@@ -485,150 +485,167 @@ app.post('/login', (req, res) => {
 app.post('/generate-pdf', (req, res) => {
     const data = req.body;
 
-    // Función para agregar la imagen en el pie de página
-    function agregarImagenEnPieDePagina(pdf) {
-        const imagenPath = path.join(__dirname, 'img/Membrete-bj.jpg');
-        const imagenAncho = 550;
-        const imagenAlto = 100;
-        const margen = 20;
-      
-        const paginas = pdf.bufferedPageRange().count;
-      
-        for (let i = 0; i < paginas; i++) { // Definir la variable i aquí
-            pdf.switchToPage(i);
-            pdf.image(imagenPath, margen, pdf.page.height - margen - imagenAlto, {
-                width: imagenAncho,
-                height: imagenAlto
-            });
+    // Obtener el último ID de oficio de la base de datos
+    connection.query('SELECT MAX(id) AS ultimo_id FROM pdf_data', (err, rows) => {
+        if (err) {
+            console.error('Error al obtener el último ID de oficio:', err);
+            return res.status(500).send('Error interno del servidor');
         }
-      }
 
+        // Obtener el último ID de oficio y agregar 1 para el nuevo oficio
+        const ultimoId = rows[0].ultimo_id || 0;
+        const nuevoId = ultimoId + 1;
 
-    // Función para construir el contenido del PDF
-    function construirContenidoPDF(doc) {
-        doc.image(imagePath, {
-            fit: [350, 350], 
-            align: 'center',
-        });
-        doc.moveDown(4);
-
-        doc.font('Helvetica-Bold').fontSize(12).text(`ÁREA: SERVICIOS DOCENTES \n OFICIO No. 220 (CE-148)${data.numero}/2024`, {
-            align: 'right'
-        });
-        doc.text(`ASUNTO: ${data.asunto}`,{
-            align: 'right'
-        });
-        doc.text(`Durango, Dgo. ${fechaEscrita(data.fecha)}`,{
-            align: 'right'
-        });
-        doc.moveDown(2);
-        doc.text(` ${data.maestro} \nDOCENTE DEL PLANTEL`);
-        doc.moveDown(4);
-        doc.text(`Texto: ${data.texto}`);
-        doc.moveDown(2);
-
-        doc.moveDown(15);
-        doc.font('Helvetica-Bold').fontSize(12)
-            .text('ATENTAMENTE.', 70, 480)
-            .text('M.T.I. JOEL VÀZQUEZ RÌOS', 70, 580)
-            .text('JEFE DEL DEPARTAMENTO', 70, 595)    
-            .text('DE SERVICIOS DOCENTES', 70, 610); 
-
-        agregarImagenEnPieDePagina(doc);
-
-        doc.end();
-
-        function fechaEscrita(fecha) {
-            const meses = [
-                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-            ];
-            
-            const partesFecha = fecha.split('-');
-            const dia = partesFecha[2];
-            const mesNum = parseInt(partesFecha[1]) - 1;
-            const mes = meses[mesNum];
-            const año = partesFecha[0];
-            
-            return `${dia} de ${mes} de ${año}`;
-        }
-    }
-
-    if (req.query.doc) {
-        
-        // Generar el documento DOC
-        const doc = new Docxtemplater();
-        const content = fs.readFileSync(path.resolve(__dirname, 'plantilla.docx'), 'binary');
-        doc.loadZip(content);
-
-        // Reemplazar los marcadores de posición en la plantilla con los datos proporcionados
-        doc.setData({
-            asunto: data.asunto,
-            maestro: data.maestro,
-            especialidad: data.especialidad,
-            materia: data.materia,
-            grupo: data.grupo,
-            fecha: fechaEscrita(data.fecha),
-            texto: data.texto
-        });
-
-        try {
-            doc.render();
-            const buf = doc.getZip().generate({ type: 'nodebuffer' });
-
-            // Guardar el DOC en la base de datos
-            const sql = 'INSERT INTO pdf_data (asunto, maestro, especialidad, materia, grupo, fecha, texto, pdf) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            const values = [data.asunto, data.maestro, data.especialidad, data.materia, data.grupo, data.fecha, data.texto, buf];
-
-            connection.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error('Error al guardar el DOC en la base de datos:', err);
-                    return res.status(500).send('Error interno del servidor');
-                }
-
-                console.log('DOC guardado en la base de datos.');
-                res.set({
-                    'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'Content-Length': buf.length,
-                    'Content-Disposition': 'attachment; filename="oficio.docx"'
+        // Función para agregar la imagen en el pie de página
+        function agregarImagenEnPieDePagina(pdf) {
+            const imagenPath = path.join(__dirname, 'img/Membrete-bj.jpg');
+            const imagenAncho = 550;
+            const imagenAlto = 100;
+            const margen = 20;
+          
+            const paginas = pdf.bufferedPageRange().count;
+          
+            for (let i = 0; i < paginas; i++) { // Definir la variable i aquí
+                pdf.switchToPage(i);
+                pdf.image(imagenPath, margen, pdf.page.height - margen - imagenAlto, {
+                    width: imagenAncho,
+                    height: imagenAlto
                 });
-                res.send(buf);
-            });
-        } catch (error) {
-            console.error('Error al renderizar el DOC:', error);
-            res.status(500).send('Error interno del servidor');
+            }
         }
-    } else {
-        // Generar el PDF
-        const pdf = new PDFDocument();
-        let buffers = [];
-        pdf.on('data', buffers.push.bind(buffers));
-        pdf.on('end', () => {
-            const pdfData = Buffer.concat(buffers);
 
-            // Guardar el PDF en la base de datos
-            const sql = 'INSERT INTO pdf_data (asunto, maestro, especialidad, materia, grupo, fecha, texto, pdf) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            const values = [data.asunto, data.maestro, data.especialidad, data.materia, data.grupo, data.fecha, data.texto, pdfData];
 
-            connection.query(sql, values, (err, result) => {
-                if (err) {
-                    console.error('Error al guardar el PDF en la base de datos:', err);
-                    return res.status(500).send('Error interno del servidor');
-                }
-
-                console.log('PDF guardado en la base de datos.');
-                res.set({
-                    'Content-Type': 'application/pdf',
-                    'Content-Length': pdfData.length,
-                    'Content-Disposition': 'attachment; filename="oficio.pdf"'
-                });
-                res.send(pdfData);
+        // Función para construir el contenido del PDF
+        function construirContenidoPDF(doc) {
+            doc.image(imagePath, {
+                fit: [350, 350], 
+                align: 'center',
             });
-        });
+            doc.moveDown(4);
 
-        construirContenidoPDF(pdf);
-    }
+            doc.font('Helvetica-Bold').fontSize(12).text(`ÁREA: SERVICIOS DOCENTES \n OFICIO No. 220 (CE-148)${nuevoId}/2024`, {
+                align: 'right'
+            });
+            doc.text(`ASUNTO: ${data.asunto}`,{
+                align: 'right'
+            });
+            doc.text(`Durango, Dgo. ${fechaEscrita(data.fecha)}`,{
+                align: 'right'
+            });
+            doc.moveDown(2);
+            doc.text(`${data.maestro} \nDOCENTE DEL PLANTEL`);
+            doc.moveDown(4);
+            doc.font('Helvetica').text(`${data.texto}`);
+            doc.moveDown(2);
+
+            doc.moveDown(15);
+            doc.font('Helvetica-Bold').fontSize(12)
+                .text('ATENTAMENTE.', 70, 480)
+                .text('M.T.I. JOEL VÀZQUEZ RÌOS', 70, 580)
+                .text('JEFE DEL DEPARTAMENTO', 70, 595)    
+                .text('DE SERVICIOS DOCENTES', 70, 610);
+                doc.moveDown(2);
+
+                doc.font('Helvetica-Bold').fontSize(6).text(`C.c.p -interesado \n C.c.p. Archivo \n JVR/damg`);
+
+
+            agregarImagenEnPieDePagina(doc);
+
+            doc.end();
+
+            function fechaEscrita(fecha) {
+                const meses = [
+                    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                ];
+                
+                const partesFecha = fecha.split('-');
+                const dia = partesFecha[2];
+                const mesNum = parseInt(partesFecha[1]) - 1;
+                const mes = meses[mesNum];
+                const año = partesFecha[0];
+                
+                return `${dia} de ${mes} de ${año}`;
+            }
+        }
+
+        if (req.query.doc) {
+            
+            // Generar el documento DOC
+            const doc = new Docxtemplater();
+            const content = fs.readFileSync(path.resolve(__dirname, 'plantilla.docx'), 'binary');
+            doc.loadZip(content);
+
+            // Reemplazar los marcadores de posición en la plantilla con los datos proporcionados
+            doc.setData({
+                asunto: data.asunto,
+                maestro: data.maestro,
+                especialidad: data.especialidad,
+                materia: data.materia,
+                grupo: data.grupo,
+                fecha: fechaEscrita(data.fecha),
+                texto: data.texto
+            });
+
+            try {
+                doc.render();
+                const buf = doc.getZip().generate({ type: 'nodebuffer' });
+
+                // Guardar el DOC en la base de datos
+                const sql = 'INSERT INTO pdf_data (asunto, maestro, especialidad, materia, grupo, fecha, texto, pdf) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                const values = [data.asunto, data.maestro, data.especialidad, data.materia, data.grupo, data.fecha, data.texto, buf];
+
+                connection.query(sql, values, (err, result) => {
+                    if (err) {
+                        console.error('Error al guardar el DOC en la base de datos:', err);
+                        return res.status(500).send('Error interno del servidor');
+                    }
+
+                    console.log('DOC guardado en la base de datos.');
+                    res.set({
+                        'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'Content-Length': buf.length,
+                        'Content-Disposition': 'attachment; filename="oficio.docx"'
+                    });
+                    res.send(buf);
+                });
+            } catch (error) {
+                console.error('Error al renderizar el DOC:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        } else {
+            // Generar el PDF
+            const pdf = new PDFDocument();
+            let buffers = [];
+            pdf.on('data', buffers.push.bind(buffers));
+            pdf.on('end', () => {
+                const pdfData = Buffer.concat(buffers);
+
+                // Guardar el PDF en la base de datos
+                const sql = 'INSERT INTO pdf_data (asunto, maestro, especialidad, materia, grupo, fecha, texto, pdf) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                const values = [data.asunto, data.maestro, data.especialidad, data.materia, data.grupo, data.fecha, data.texto, pdfData];
+
+                connection.query(sql, values, (err, result) => {
+                    if (err) {
+                        console.error('Error al guardar el PDF en la base de datos:', err);
+                        return res.status(500).send('Error interno del servidor');
+                    }
+
+                    console.log('PDF guardado en la base de datos.');
+                    res.set({
+                        'Content-Type': 'application/pdf',
+                        'Content-Length': pdfData.length,
+                        'Content-Disposition': 'attachment; filename="oficio.pdf"'
+                    });
+                    res.send(pdfData);
+                });
+            });
+
+            construirContenidoPDF(pdf);
+        }
+    });
 });
+
 
 
 // Obtener lista de maestros mediante AJAX
