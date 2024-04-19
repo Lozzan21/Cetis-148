@@ -3,178 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oficio</title>
+    <title>Generar oficio</title>
+    <link rel="icon" href="/img/icono.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Generar Oficio</h1>
-    <form action="/generate-pdf" method="POST">
-        <label for="asunto">Asunto:</label>
-        <select id="asunto" name="asunto" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('asunto')">Agregar</button><br>
+<body class="space-y-5 p-10">
+
+            <h1 class="mb-10 font-medium text-2xl">GENERAR OFICIO</h1>
+            <form action="/generar" method="post">
 
 
-        <!-- Dropdown para seleccionar maestro -->
-        <label for="maestro">Seleccionar Maestro:</label>
-        <select id="maestro" name="maestro" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('maestro')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="asunto">Asunto:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="asunto" name="asunto" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('asunto')">Agregar</button>
+                    </div>
+
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="maestro">Seleccionar Maestro:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="maestro" name="maestro" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('maestro')">Agregar</button><br>
+                    </div>
+                </div>
 
 
-        <!-- Dropdown para seleccionar especialidad -->
-        <label for="especialidad">Seleccionar Especialidad:</label>
-        <select id="especialidad" name="especialidad" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('especialidad')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="especialidad">Seleccionar Especialidad:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="especialidad" name="especialidad" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('especialidad')">Agregar</button><br>
+                    </div>
 
-        <!-- Dropdown para seleccionar materia -->
-        <label for="materia">Seleccionar Materia:</label>
-        <select id="materia" name="materia" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('materia')">Agregar</button><br>
-
-
-        <!-- Dropdown para seleccionar grupo -->
-        <label for="grupo">Seleccionar Grupo:</label>
-        <select id="grupo" name="grupo" required>
-            <!-- Las opciones se agregarán aquí mediante JavaScript -->
-        </select><br>
-        <button type="button" onclick="agregarTexto('grupo')">Agregar</button><br>
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="materia">Seleccionar Materia:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="materia" name="materia" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('materia')">Agregar</button><br>
+                    </div>
+                </div>
 
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required><br>
-        <button type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
+                <div class="flex space-x-32">
+                    <div class="flex space-x-4 items-center">
+                        <label class=" font-medium" for="grupo">Seleccionar Grupo:</label>
+                        <select class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" id="grupo" name="grupo" required></select>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('grupo')">Agregar</button><br>
+                    </div>
 
+                    <div class="flex space-x-4">
+                        <label class=" font-medium"  for="fecha">Fecha:</label>
+                        <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" type="date" id="fecha" name="fecha" required>
+                        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
+                    </div>
+                </div>
 
-        <label for="texto">Texto:</label>
-        <input type="text" id="texto" name="texto" required><br>
+                <div class="flex space-x-4 items-center">
+                    <label class="font-medium" for="numero">Número de oficio:</label>
+                    <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" type="text" id="numero" name="numero" required>
+                </div>
 
-        <input type="checkbox" id="avanzadosCheckbox" name="avanzados" checked>
-        <label for="avanzadosCheckbox">Avanzados</label><br><br>   
+                <div class="grid">
+                    <label class=" font-medium" for="texto">Texto:</label>
+                    <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-32 w-8/12" type="text" id="texto" name="texto" required>
+                </div>
+                
+        <div class="checkbox-container">
+            <input type="checkbox" id="avanzadosCheckbox" name="avanzados" checked>
+            <label for="avanzadosCheckbox">Avanzados</label><br><br>    
+        </div>   
+
+        <button type="button" class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" onclick="toggleTabla()">Agregar Tabla</button><br><br>
+
+<!-- Contenedor de la tabla (inicialmente oculto) -->
+<div id="tablaContainer" class="hidden bg-gray-100 p-4 rounded-lg">
+    <h2 class="text-xl font-bold mb-4">Contenido de la Tabla:</h2>
+    <label for="numRows" class="block mb-2">Número de Filas:</label>
+    <input type="number" id="numRows" name="numRows" min="1" required class="block w-full mb-4 border border-gray-300 rounded-lg px-3 py-2">
+
+    <label for="numCols" class="block mb-2">Número de Columnas:</label>
+    <input type="number" id="numCols" name="numCols" min="1" required class="block w-full mb-4 border border-gray-300 rounded-lg px-3 py-2">
+
+    <div id="columnTitlesContainer" class="grid grid-cols-3 gap-4 mb-4">
+        <!-- Aquí se agregarán los campos de entrada para los títulos de las columnas -->
+    </div>
+
+    <div id="tablaContenidoContainer" class="grid grid-cols-3 gap-4 mb-4">
+        <!-- Aquí se agregarán los campos de entrada para el contenido de la tabla -->
+    </div>
+
+    <!-- Botón para agregar información a la tabla (inicialmente oculto) -->
+    <button type="button" id="agregarContenidoBtn" onclick="agregarCampos()" class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400">Agregar Información a la Tabla</button>
+</div>
+
         
-        <button type="submit">Generar PDF</button>
-    </form>
+        <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="submit">Generar PDF</button>
+    </form>    
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var selectAsunto = document.getElementById('asunto');
-            var selectMaestro = document.getElementById('maestro');
-            var selectEspecialidad = document.getElementById('especialidad');
-            var selectMateria = document.getElementById('materia');
-            var selectGrupo = document.getElementById('grupo');
 
-            // Obtener lista de asuntos mediante AJAX
-            var xhrAsuntos = new XMLHttpRequest();
-            xhrAsuntos.open('GET', '/asuntos', true);
-            xhrAsuntos.onload = function () {
-                if (xhrAsuntos.status === 200) {
-                    var asuntos = JSON.parse(xhrAsuntos.responseText);
-                    asuntos.forEach(function (asunto) {
-                        var option = document.createElement('option');
-                        option.value = asunto.nombre;
-                        option.textContent = asunto.nombre;
-                        selectAsunto.appendChild(option);
-                    });
-                }
-            };
-            xhrAsuntos.send();
-
-            // Obtener lista de maestros mediante AJAX
-            var xhrMaestros = new XMLHttpRequest();
-            xhrMaestros.open('GET', '/maestro', true);
-            xhrMaestros.onload = function () {
-                if (xhrMaestros.status === 200) {
-                    var maestros = JSON.parse(xhrMaestros.responseText);
-                    maestros.forEach(function (maestro) {
-                        var option = document.createElement('option');
-                        option.value = maestro.nombre;
-                        option.textContent = maestro.nombre;
-                        selectMaestro.appendChild(option);
-                    });
-                }
-            };
-            xhrMaestros.send();
-
-            // Obtener lista de especialidades mediante AJAX
-            var xhrEspecialidades = new XMLHttpRequest();
-            xhrEspecialidades.open('GET', '/especialidades', true);
-            xhrEspecialidades.onload = function () {
-                if (xhrEspecialidades.status === 200) {
-                    var especialidades = JSON.parse(xhrEspecialidades.responseText);
-                    especialidades.forEach(function (especialidad) {
-                        var option = document.createElement('option');
-                        option.value = especialidad.nombre;
-                        option.textContent = especialidad.nombre;
-                        selectEspecialidad.appendChild(option);
-                    });
-                }
-            };
-            xhrEspecialidades.send();
-
-            // Obtener lista de materias mediante AJAX
-            var xhrMaterias = new XMLHttpRequest();
-            xhrMaterias.open('GET', '/materia', true);
-            xhrMaterias.onload = function () {
-                if (xhrMaterias.status === 200) {
-                    var materias = JSON.parse(xhrMaterias.responseText);
-                    materias.forEach(function (materia) {
-                        var option = document.createElement('option');
-                        option.value = materia.nombre;
-                        option.textContent = materia.nombre;
-                        selectMateria.appendChild(option);
-                    });
-                }
-            };
-            xhrMaterias.send();
-
-            // Obtener lista de grupos mediante AJAX
-            var xhrGrupos = new XMLHttpRequest();
-            xhrGrupos.open('GET', '/grupo', true);
-            xhrGrupos.onload = function () {
-                if (xhrGrupos.status === 200) {
-                    var grupos = JSON.parse(xhrGrupos.responseText);
-                    grupos.forEach(function (grupo) {
-                        var option = document.createElement('option');
-                        option.value = grupo.nombre;
-                        option.textContent = grupo.nombre;
-                        selectGrupo.appendChild(option);
-                    });
-                }
-            };
-            xhrGrupos.send();
-        });
-    </script>
         <script>
-            // Función para agregar texto a la caja de texto
-            function agregarTexto(id) {
-                var input = document.getElementById(id);
-                var textoActual = document.getElementById('texto').value;
-                var textoNuevo = input.value;
+            document.addEventListener("DOMContentLoaded", function() {
+                var selectAsunto = document.getElementById('asunto');
+                var selectMaestro = document.getElementById('maestro');
+                var selectEspecialidad = document.getElementById('especialidad');
+                var selectMateria = document.getElementById('materia');
+                var selectGrupo = document.getElementById('grupo');
     
-                // Agrega el texto nuevo al texto actual con un espacio
-                textoActual += ' ' + textoNuevo;
-    
-                // Actualiza el valor de la caja de texto
-                document.getElementById('texto').value = textoActual;
-            }
-        </script>
-        <script>
-            $(document).ready(function() {
-                // Manejar el cambio en el estado del checkbox
-                $('#avanzadosCheckbox').change(function() {
-                    if (!$(this).is(':checked')) {
-                        // Redireccionar a la vista oficios.ejs si el checkbox NO está seleccionado
-                        window.location.href = '/oficio';
-                    } else {
-                        // Opcional: Manejar otra acción si el checkbox está seleccionado
+                // Obtener lista de asuntos mediante AJAX
+                var xhrAsuntos = new XMLHttpRequest();
+                xhrAsuntos.open('GET', '/asuntos', true);
+                xhrAsuntos.onload = function () {
+                    if (xhrAsuntos.status === 200) {
+                        var asuntos = JSON.parse(xhrAsuntos.responseText);
+                        asuntos.forEach(function (asunto) {
+                            var option = document.createElement('option');
+                            option.value = asunto.nombre;
+                            option.textContent = asunto.nombre;
+                            selectAsunto.appendChild(option);
+                        });
                     }
-                });
+                };
+                xhrAsuntos.send();
+    
+                // Obtener lista de maestros mediante AJAX
+                var xhrMaestros = new XMLHttpRequest();
+                xhrMaestros.open('GET', '/maestro', true);
+                xhrMaestros.onload = function () {
+                    if (xhrMaestros.status === 200) {
+                        var maestros = JSON.parse(xhrMaestros.responseText);
+                        maestros.forEach(function (maestro) {
+                            var option = document.createElement('option');
+                            option.value = maestro.nombre;
+                            option.textContent = maestro.nombre;
+                            selectMaestro.appendChild(option);
+                        });
+                    }
+                };
+                xhrMaestros.send();
+    
+                // Obtener lista de especialidades mediante AJAX
+                var xhrEspecialidades = new XMLHttpRequest();
+                xhrEspecialidades.open('GET', '/especialidades', true);
+                xhrEspecialidades.onload = function () {
+                    if (xhrEspecialidades.status === 200) {
+                        var especialidades = JSON.parse(xhrEspecialidades.responseText);
+                        especialidades.forEach(function (especialidad) {
+                            var option = document.createElement('option');
+                            option.value = especialidad.nombre;
+                            option.textContent = especialidad.nombre;
+                            selectEspecialidad.appendChild(option);
+                        });
+                    }
+                };
+                xhrEspecialidades.send();
+    
+                // Obtener lista de materias mediante AJAX
+                var xhrMaterias = new XMLHttpRequest();
+                xhrMaterias.open('GET', '/materia', true);
+                xhrMaterias.onload = function () {
+                    if (xhrMaterias.status === 200) {
+                        var materias = JSON.parse(xhrMaterias.responseText);
+                        materias.forEach(function (materia) {
+                            var option = document.createElement('option');
+                            option.value = materia.nombre;
+                            option.textContent = materia.nombre;
+                            selectMateria.appendChild(option);
+                        });
+                    }
+                };
+                xhrMaterias.send();
+    
+                // Obtener lista de grupos mediante AJAX
+                var xhrGrupos = new XMLHttpRequest();
+                xhrGrupos.open('GET', '/grupo', true);
+                xhrGrupos.onload = function () {
+                    if (xhrGrupos.status === 200) {
+                        var grupos = JSON.parse(xhrGrupos.responseText);
+                        grupos.forEach(function (grupo) {
+                            var option = document.createElement('option');
+                            option.value = grupo.nombre;
+                            option.textContent = grupo.nombre;
+                            selectGrupo.appendChild(option);
+                        });
+                    }
+                };
+                xhrGrupos.send();
             });
         </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Hacer una solicitud AJAX para obtener los maestros, materias, especialidades y grupos...
+        });
+
+        // Función para agregar el valor seleccionado al campo de texto
+        function agregarTexto(selectId) {
+            var selectValue = $('#' + selectId).val();
+            var textoActual = $('#texto').val();
+            if (textoActual !== '') {
+                textoActual += ', ';
+            }
+            $('#texto').val(textoActual + selectValue);
+        }
+    </script>
+
+<script>
+    // Función para mostrar u ocultar la tabla cuando se presiona el botón
+    function toggleTabla() {
+        const tablaContainer = document.getElementById('tablaContainer');
+        tablaContainer.style.display = tablaContainer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Función para agregar campos de entrada de texto para los títulos de las columnas y el contenido de la tabla
+    function agregarCampos() {
+        const numRows = parseInt(document.getElementById('numRows').value);
+        const numCols = parseInt(document.getElementById('numCols').value);
+        const columnTitlesContainer = document.getElementById('columnTitlesContainer');
+        const tablaContenidoContainer = document.getElementById('tablaContenidoContainer');
+        columnTitlesContainer.innerHTML = ''; // Limpiar títulos de columnas previos
+        tablaContenidoContainer.innerHTML = ''; // Limpiar contenido de tabla previo
+
+        // Agregar campos de entrada para los títulos de las columnas
+        for (let j = 0; j < numCols; j++) {
+            const label = document.createElement('label');
+            label.for = `titulo_columna_${j}`;
+            label.textContent = `Título de Columna ${j + 1}: `;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `titulo_columna_${j}`;
+            input.placeholder = `Título de Columna ${j + 1}`;
+            columnTitlesContainer.appendChild(label);
+            columnTitlesContainer.appendChild(input);
+            columnTitlesContainer.appendChild(document.createElement('br'));
+        }
+
+        // Agregar campos de entrada de texto para cada celda de la tabla
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+                const label = document.createElement('label');
+                label.for = `contenido_${i}_${j}`;
+                label.textContent = `Contenido Fila ${i + 1}, Columna ${j + 1}: `;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = `contenido_${i}_${j}`;
+                input.required = true;
+                tablaContenidoContainer.appendChild(label);
+                tablaContenidoContainer.appendChild(input);
+                tablaContenidoContainer.appendChild(document.createElement('br'));
+            }
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Manejar el cambio en el estado del checkbox
+        $('#avanzadosCheckbox').change(function() {
+            if (!$(this).is(':checked')) {
+                // Redireccionar a la vista oficios.ejs si el checkbox NO está seleccionado
+                window.location.href = '/oficio';
+            } else {
+                // Opcional: Manejar otra acción si el checkbox está seleccionado
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>

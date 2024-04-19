@@ -56,18 +56,21 @@
                         <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="button" onclick="agregarTexto('fecha')">Agregar</button><br>
                     </div>
                 </div>
+                <div class="flex space-x-4 items-center">
+                    <label class="font-medium" for="numero">Número de oficio:</label>
+                    <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-8" type="text" id="numero" name="numero" required>
+                </div>
+            
 
                 <div class="grid">
                     <label class=" font-medium" for="texto">Texto:</label>
                     <input class="border border-gray-400 rounded-lg pr-3 pl-3 h-32 w-8/12" type="text" id="texto" name="texto" required>
                 </div>
                 
-
-                
-                <div class="checkbox-container">
-                    <input type="checkbox" id="agregarTablaCheckbox" name="agregarTablaCheckbox" onchange="redireccionar()">
-                    <label class="font-medium" for="agregarTablaCheckbox">Avanzados</label>
-                </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="redireccionCheckbox" name="redireccionCheckbox">
+            <label for="redireccionCheckbox">Avanzados</label>
+        </div>
 
                 <button class="bg-[#730027] text-white p-1 pr-6 pl-6 rounded-md border font-medium duration-150 hover:scale-105 hover:bg-white hover:text-[#730027] hover:border-gray-400" type="submit">Generar PDF</button>
             </form>
@@ -176,12 +179,16 @@
                 document.getElementById('texto').value = textoActual;
             }
         </script>
-        <script>
-            function redireccionar() {
-    if (document.getElementById('agregarTablaCheckbox').checked) {
-        window.location.href = '/oficios'; // Reemplaza '/otra-vista' con la ruta de tu vista
-    }
-}
-        </script>
+    <script>
+        document.getElementById('redireccionCheckbox').addEventListener('change', function() {
+            // Obtener el estado actual del checkbox
+            var isChecked = this.checked;
+
+            // Redireccionar si el checkbox está marcado
+            if (isChecked) {
+                window.location.href = '/oficios'; // Cambia '/otra-vista' por la URL de tu otra vista
+            }
+        });
+    </script>
 </body>
 </html>
